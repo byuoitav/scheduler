@@ -1,0 +1,8 @@
+<mat-card class="event-card">
+  <mat-card-title>{{ event.title }}</mat-card-title>
+  <mat-card-content>
+    <span class="event-duration">{{ duration }}</span>
+    <span class="event-spacing"></span>
+    <span class="event-range">{{ event.startTime | date : "h:mm a" }} - {{ event.endTime | date : "h:mm a" }}</span>
+  </mat-card-content>
+</mat-card>

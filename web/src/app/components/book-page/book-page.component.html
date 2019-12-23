@@ -1,0 +1,48 @@
+<mat-toolbar class="availability-toolbar" [ngStyle]="{'background-color': status.unoccupied? '#74be06' : '#E94037'}">
+  <button mat-icon-button class="back-button" (click)="routeToMain()">
+    <mat-icon svgIcon="BackArrow" [inline]="true"></mat-icon>
+  </button>
+  <span class="toolbar-spacing"></span>
+  <span class="booking-title">Booking {{ status.roomName }} for {{day | date : "EEEE, MMM dd"}}</span>
+</mat-toolbar>
+
+<mat-grid-list cols="5" rowHeight="136px">
+  <mat-grid-tile colspan="3" rowspan="3">
+    <mat-card class="book-window-card">
+      <mat-card-content class="event-label">Event Title</mat-card-content>
+      <mat-card-content class="event-title-text-container">
+        <textarea matInput #eventTitle placeholder="Book Now Meeting" class="event-title-text" rows="5"
+          [value]="eventTitleValue" (focus)="showKeyboard()"></textarea>
+      </mat-card-content>
+      <mat-card-footer class="event-footer">
+        <mat-select #eventStart [formControl]="startTimeControl" class="select-start-time" placeholder="Start Time"
+          (selectionChange)="startSelected()">
+          <mat-option *ngFor="let time of timeIncrements" [value]="time" [disabled]="time.validStart === false">
+            <span *ngIf="time.validStart; else startElseBlock">{{time.viewValue}}</span>
+            <ng-template #startElseBlock>{{time.viewValue}} [Busy]</ng-template>
+          </mat-option>
+        </mat-select>
+        <mat-select #eventEnd [formControl]="endTimeControl" class="select-end-time" placeholder="End Time"
+          (selectionChange)="endSelected()">
+          <mat-option *ngFor="let time of timeIncrements" [value]="time" [disabled]="time.validEnd === false">
+            <span *ngIf="time.validEnd; else endElseBlock">{{time.viewValue}}</span>
+            <ng-template #endElseBlock>{{time.viewValue}} [Busy]</ng-template>
+          </mat-option>
+        </mat-select>
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="2">
+    <app-time></app-time>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="1">
+    <button mat-stroked-button class="main-button" (click)="saveEventData()">
+      <mat-icon svgIcon="SaveTray" class="button-icon"></mat-icon>
+      SAVE
+    </button>
+    <button mat-stroked-button class="main-button" (click)="routeToMain()">
+      <mat-icon svgIcon="Cancel" class="button-icon"></mat-icon>
+      CANCEL
+    </button>
+  </mat-grid-tile>
+</mat-grid-list>
