@@ -4,19 +4,26 @@ import (
 	"context"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/labstack/echo"
 )
 
-type Event struct {
-	Title     string `json:"title"`
-	StartTime string `json:"startTime"`
-	EndTime   string `json:"endTime"`
+type Event interface {
+	GetTitle() string
+	GetStartTime() time.Time
+	GetEndTime() time.Time
+}
+
+type jsonEvent struct {
+	Title     string    `json:"title"`
+	StartTime time.Time `json:"startTime"`
+	EndTime   time.Time `json:"endTime"`
 }
 
 type Calendar interface {
 	GetEvents(context.Context) ([]Event, error)
-	CreateEvent(context.Context, Event) error
+	CreateEvent(ctx context.Context, title string, startTime, endTime time.Time) error
 }
 
 type CreateCalendarFunc func(context.Context, string) (Calendar, error)
@@ -55,7 +62,16 @@ func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		return c.JSON(http.StatusOK, events)
+		var je []jsonEvent
+		for _, e := range events {
+			je = append(je, jsonEvent{
+				Title:     e.GetTitle(),
+				StartTime: e.GetStartTime(),
+				EndTime:   e.GetEndTime(),
+			})
+		}
+
+		return c.JSON(http.StatusOK, je)
 	})
 
 	e.POST("/events/:roomID", func(c echo.Context) error {
@@ -64,8 +80,8 @@ func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
 			return c.String(http.StatusBadRequest, "must include roomID")
 		}
 
-		var event Event
-		if err := c.Bind(&event); err != nil {
+		var je jsonEvent
+		if err := c.Bind(&je); err != nil {
 			return c.String(http.StatusBadRequest, err.Error())
 		}
 
@@ -74,7 +90,7 @@ func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		if err := cal.CreateEvent(c.Request().Context(), event); err != nil {
+		if err := cal.CreateEvent(c.Request().Context(), je.Title, je.StartTime, je.EndTime); err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
