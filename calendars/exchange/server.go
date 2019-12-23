@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 
 	"github.com/byuoitav/exchange-calendar"
 	"github.com/byuoitav/scheduler/calendars"
@@ -29,12 +30,14 @@ func main() {
 
 	create := func(ctx context.Context, roomID string) (calendars.Calendar, error) {
 		// TODO add logic to make sure they are set?
+		// Separate roomID from resource
+		idSlice := strings.Split(roomID, "@")
 		cal := &exchange.Calendar{
 			ClientId:     os.Getenv("AZURE_AD_CLIENT_ID"),
 			ClientSecret: os.Getenv("AZURE_AD_CLIENT_SECRET"),
 			TennantId:    os.Getenv("AZURE_AD_TENNANT_ID"),
-			RoomID:       roomID,
-			RoomResource: "Test", // TODO find some way to get the resource into the struct
+			RoomID:       idSlice[0],
+			RoomResource: roomID,
 		}
 
 		switch {
