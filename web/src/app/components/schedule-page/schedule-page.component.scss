@@ -1,0 +1,38 @@
+.availability-toolbar {
+  background-color: #74be06;
+  height: 70px;
+  color: white;
+  font-size: 28px;
+  font-style: oblique;
+}
+
+.back-button {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 0px;
+}
+
+.toolbar-spacing {
+  width: 2%;
+}
+
+app-time {
+  width: 100%;
+  height: 100%;
+  margin-right: 10%;
+}
+
+.schedule-scroll-list {
+  height: 90%;
+  width: 90%;
+}
+
+.empty-schedule-message {
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  padding-top: 35%;
+  width: 100%;
+  height: 100%;
+}

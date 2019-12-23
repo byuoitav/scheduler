@@ -1,0 +1,24 @@
+<mat-toolbar class="availability-toolbar" [ngStyle]="{'background-color': status.unoccupied? '#74be06' : '#E94037'}">
+  <button mat-icon-button class="back-button" (click)="routeToMain()">
+    <mat-icon svgIcon="BackArrow" [inline]="true"></mat-icon>
+  </button>
+  <span class="toolbar-spacing"></span>
+  <span class="schedule-title">{{ status.roomName }} Schedule</span>
+</mat-toolbar>
+
+<mat-grid-list cols="5" rowHeight="136px">
+  <mat-grid-tile colspan="3" rowspan="3">
+    <cdk-virtual-scroll-viewport itemSize="3" class="schedule-scroll-list">
+      <span *ngIf="status.emptySchedule === false; else elseBlock">
+        <app-schedule-list *cdkVirtualFor="let event of eventList" [event]="event"></app-schedule-list>
+      </span>
+      <ng-template #elseBlock>
+        <div class="empty-schedule-message">There are no scheduled events.</div>
+      </ng-template>
+    </cdk-virtual-scroll-viewport>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="2">
+    <app-time></app-time>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="1"></mat-grid-tile>
+</mat-grid-list>

@@ -1,0 +1,34 @@
+<mat-toolbar class="availability-toolbar" [ngStyle]="{'background-color': status.unoccupied? '#74be06' : '#E94037'}">
+</mat-toolbar>
+
+<mat-grid-list cols="5" rowHeight="120px">
+  <mat-grid-tile colspan="3" rowspan="2" class="grid-tile-status">
+    <mat-card class="title-card">
+      <mat-card-title class="room-title">{{ status.roomName }}</mat-card-title>
+      <mat-card-content class="room-availability" [ngStyle]="{'color': status.unoccupied? '#74be06' : '#E94037'}">
+        <span *ngIf="status.unoccupied; else elseBlock">AVAILABLE</span>
+        <ng-template #elseBlock>IN USE</ng-template>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="2" class="grid-tile-time">
+    <app-time></app-time>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="5" class="grid-tile-event">
+    <span class="current-event" *ngIf="status.unoccupied == false">{{ currentEvent.title }}</span>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-toolbar class="footer">
+  <mat-toolbar-row>
+    <span class="footer-spacer-left"></span>
+    <button mat-stroked-button class="footer-button" (click)="routeToSchedule()">
+      <mat-icon svgIcon="Calendar" class="button-icon"></mat-icon>
+      VIEW SCHEDULE
+    </button>
+    <button mat-stroked-button class="footer-button" (click)="routeToBook()">
+      <mat-icon svgIcon="Plus" class="button-icon"></mat-icon>
+      BOOK NOW
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>

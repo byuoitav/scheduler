@@ -1,0 +1,25 @@
+.event-card {
+  color: white;
+  font-size: 18px;
+  font-family: serif;
+  font-style: bold;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 1%;
+  padding-bottom: 10%;
+}
+
+mat-card-content {
+  color: grey;
+  padding-top: 3%;
+  font-size: 18px;
+}
+
+.event-duration {
+  float: left;
+  position: relative;
+}
+
+.event-range {
+  float: right;
+  position: relative;
+}
