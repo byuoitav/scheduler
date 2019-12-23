@@ -15,7 +15,7 @@ type Config struct {
 	Rev string `json:"_rev"`
 
 	// visual appearance
-	DisplayName   string `json:"displayname"`
+	DisplayName   string `json:"displayName"`
 	BackgroundURL string `json:"backgroundURL"`
 
 	// functionality
