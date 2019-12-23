@@ -16,7 +16,7 @@ func main() {
 	// parse flags
 	var port int
 
-	pflag.IntVarP(&port, "port", "p", 8080, "port to run the server on")
+	pflag.IntVarP(&port, "port", "p", 11003, "port to run the server on")
 	pflag.Parse()
 
 	// bind to given port
