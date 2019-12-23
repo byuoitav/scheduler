@@ -1,0 +1,7 @@
+FROM gcr.io/distroless/static
+MAINTAINER Daniel Randall <danny_randall@byu.edu>
+
+COPY gsuite /gsuite
+
+ENTRYPOINT ["/gsuite"]
+CMD ["-p", "11001"]
