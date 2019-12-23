@@ -43,6 +43,10 @@ func GetEvents(ctx context.Context, roomID string) ([]calendars.Event, error) {
 		return events, fmt.Errorf("unable to read response from calendar: %w", err)
 	}
 
+	if resp.StatusCode/100 != 2 {
+		return events, fmt.Errorf("bad response from calendar (%v): %s", resp.StatusCode, b)
+	}
+
 	// parse response
 	if err := json.Unmarshal(b, &events); err != nil {
 		return events, fmt.Errorf("unable to parse response from calendar: %w. response body: %s", err, b)
