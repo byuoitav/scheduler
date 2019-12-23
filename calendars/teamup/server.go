@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -28,12 +29,23 @@ func main() {
 
 	create := func(ctx context.Context, roomID string) (calendars.Calendar, error) {
 		// TODO add logic to make sure they are set?
-		return &teamup.Calendar{
+		cal := &teamup.Calendar{
 			APIKey:     os.Getenv("TEAMUP_API_KEY"),
 			Password:   os.Getenv("TEAMUP_PASSWORD"),
-			CalendarID: os.Getenv("CALENDAR_ID"),
+			CalendarID: os.Getenv("TEAMUP_CALENDAR_ID"),
 			RoomID:     roomID,
-		}, nil
+		}
+
+		switch {
+		case len(cal.APIKey) == 0:
+			return nil, errors.New("TEAMUP_API_KEY not set")
+		case len(cal.CalendarID) == 0:
+			return nil, errors.New("TEAMUP_CALENDAR_ID not set")
+		case len(cal.RoomID) == 0:
+			return nil, errors.New("roomID must be set")
+		}
+
+		return cal, nil
 	}
 
 	server := calendars.CreateCalendarServer(create)
