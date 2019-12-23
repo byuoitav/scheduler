@@ -9,26 +9,20 @@ import (
 	"github.com/labstack/echo"
 )
 
-type Event interface {
-	GetTitle() string
-	GetStartTime() time.Time
-	GetEndTime() time.Time
-}
-
-type jsonEvent struct {
+type Event struct {
 	Title     string    `json:"title"`
 	StartTime time.Time `json:"startTime"`
 	EndTime   time.Time `json:"endTime"`
 }
 
 type Calendar interface {
-	GetEvents(context.Context) ([]Event, error)
-	CreateEvent(ctx context.Context, title string, startTime, endTime time.Time) error
+	GetEvents(context.Context) (interface{}, error)
+	CreateEvent(context.Context, Event) error
 }
 
 type CreateCalendarFunc func(context.Context, string) (Calendar, error)
 
-func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
+func CreateCalendarServer(create CreateCalendarFunc) Server {
 	e := newEchoServer()
 	m := &sync.Map{}
 
@@ -62,16 +56,7 @@ func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		var je []jsonEvent
-		for _, e := range events {
-			je = append(je, jsonEvent{
-				Title:     e.GetTitle(),
-				StartTime: e.GetStartTime(),
-				EndTime:   e.GetEndTime(),
-			})
-		}
-
-		return c.JSON(http.StatusOK, je)
+		return c.JSON(http.StatusOK, events)
 	})
 
 	e.POST("/events/:roomID", func(c echo.Context) error {
@@ -80,8 +65,8 @@ func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
 			return c.String(http.StatusBadRequest, "must include roomID")
 		}
 
-		var je jsonEvent
-		if err := c.Bind(&je); err != nil {
+		var event Event
+		if err := c.Bind(&event); err != nil {
 			return c.String(http.StatusBadRequest, err.Error())
 		}
 
@@ -90,12 +75,12 @@ func CreateCalendarServer(create CreateCalendarFunc) (Server, error) {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		if err := cal.CreateEvent(c.Request().Context(), je.Title, je.StartTime, je.EndTime); err != nil {
+		if err := cal.CreateEvent(c.Request().Context(), event); err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
 		return c.String(http.StatusOK, "event successfully created")
 	})
 
-	return wrapEchoServer(e), nil
+	return wrapEchoServer(e)
 }
