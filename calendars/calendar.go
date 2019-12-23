@@ -40,7 +40,7 @@ func CreateCalendarServer(create CreateCalendarFunc) Server {
 		return cal, nil
 	}
 
-	e.GET("/events/:roomID", func(c echo.Context) error {
+	e.GET("/:roomID/events", func(c echo.Context) error {
 		roomID := c.Param("roomID")
 		if len(roomID) == 0 {
 			return c.String(http.StatusBadRequest, "must include roomID")
@@ -59,7 +59,7 @@ func CreateCalendarServer(create CreateCalendarFunc) Server {
 		return c.JSON(http.StatusOK, events)
 	})
 
-	e.POST("/events/:roomID", func(c echo.Context) error {
+	e.POST("/:roomID/events", func(c echo.Context) error {
 		roomID := c.Param("roomID")
 		if len(roomID) == 0 {
 			return c.String(http.StatusBadRequest, "must include roomID")
