@@ -16,7 +16,7 @@ type Event struct {
 }
 
 type Calendar interface {
-	GetEvents(context.Context) (interface{}, error)
+	GetEvents(context.Context) ([]Event, error)
 	CreateEvent(context.Context, Event) error
 }
 
