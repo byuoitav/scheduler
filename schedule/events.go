@@ -9,6 +9,8 @@ import (
 	"sort"
 
 	"github.com/byuoitav/scheduler/calendars"
+	"github.com/byuoitav/scheduler/log"
+	"go.uber.org/zap"
 )
 
 func GetEvents(ctx context.Context, roomID string) ([]calendars.Event, error) {
@@ -19,6 +21,8 @@ func GetEvents(ctx context.Context, roomID string) ([]calendars.Event, error) {
 	if err != nil {
 		return events, fmt.Errorf("unable to get schedule config: %w", err)
 	}
+
+	log.P.Info("Getting events", zap.String("room", roomID), zap.String("url", config.CalendarURL))
 
 	// build request
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, config.CalendarURL, nil)

@@ -7,8 +7,10 @@ import (
 	"strings"
 
 	"github.com/byuoitav/scheduler/calendars"
+	"github.com/byuoitav/scheduler/log"
 	"github.com/byuoitav/scheduler/schedule"
 	"github.com/labstack/echo"
+	"go.uber.org/zap"
 )
 
 // GetConfig returns the config for this device, based on it's SYSTEM_ID
@@ -33,6 +35,8 @@ func GetConfig(c echo.Context) error {
 
 func GetEvents(c echo.Context) error {
 	roomID := c.Param("roomID")
+
+	log.P.Info("Getting events", zap.String("room", roomID))
 
 	events, err := schedule.GetEvents(c.Request().Context(), roomID)
 	if err != nil {
