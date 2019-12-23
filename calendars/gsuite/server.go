@@ -7,8 +7,8 @@ import (
 	"net"
 	"os"
 
+	"github.com/byuoitav/gsuite-calendar"
 	"github.com/byuoitav/scheduler/calendars"
-	"github.com/byuoitav/teamup-calendar"
 	"github.com/spf13/pflag"
 )
 
@@ -16,7 +16,7 @@ func main() {
 	// parse flags
 	var port int
 
-	pflag.IntVarP(&port, "port", "p", 11003, "port to run the server on")
+	pflag.IntVarP(&port, "port", "p", 11001, "port to run the server on")
 	pflag.Parse()
 
 	// bind to given port
@@ -29,18 +29,17 @@ func main() {
 
 	create := func(ctx context.Context, roomID string) (calendars.Calendar, error) {
 		// TODO add logic to make sure they are set?
-		cal := &teamup.Calendar{
-			APIKey:     os.Getenv("TEAMUP_API_KEY"),
-			Password:   os.Getenv("TEAMUP_PASSWORD"),
-			CalendarID: os.Getenv("TEAMUP_CALENDAR_ID"),
-			RoomID:     roomID,
+		cal := &gsuite.Calendar{
+			UserEmail:       os.Getenv("G_SUITE_EMAIL"),
+			CredentialsPath: os.Getenv("G_SUITE_CREDENTIALS"),
+			RoomID:          roomID,
 		}
 
 		switch {
-		case len(cal.APIKey) == 0:
-			return nil, errors.New("TEAMUP_API_KEY not set")
-		case len(cal.CalendarID) == 0:
-			return nil, errors.New("TEAMUP_CALENDAR_ID not set")
+		case len(cal.UserEmail) == 0:
+			return nil, errors.New("G_SUITE_EMAIL not set")
+		case len(cal.CredentialsPath) == 0:
+			return nil, errors.New("G_SUITE_CREDENTIALS not set")
 		case len(cal.RoomID) == 0:
 			return nil, errors.New("roomID must be set")
 		}

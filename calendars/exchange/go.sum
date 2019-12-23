@@ -5,6 +5,8 @@ github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d h1:F3/vBL2hw+zjCm7
 github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d/go.mod h1:YTDTFEmez7HU3oyCIWjU3RfQ/P6v24LEzH5YUebph7I=
 github.com/byuoitav/exchange-calendar v0.0.0-20191223205746-60a0d7860700 h1:pMDy/nd95YLO9mhZUlHFxnavO99aoxywEq+4I/UwONs=
 github.com/byuoitav/exchange-calendar v0.0.0-20191223205746-60a0d7860700/go.mod h1:X7kFOk7+PuyeYYvXbYSP5hSnWHLq2gUGVQASniQCez0=
+github.com/byuoitav/exchange-calendar v0.0.1 h1:mHnRynPXKPQqL043bRGePmIFL9xFtNHZB1kWUdkqvAM=
+github.com/byuoitav/exchange-calendar v0.0.1/go.mod h1:X7kFOk7+PuyeYYvXbYSP5hSnWHLq2gUGVQASniQCez0=
 github.com/byuoitav/scheduler v0.0.2 h1:KA/JcE0JXhlbMQAL5GGmHTdnJ8Dc+jdA/Nwn/LpE42k=
 github.com/byuoitav/scheduler v0.0.2/go.mod h1:NsOXE7OiVVSuiwD2NJctJWMRgaJDnKDwSedUbeyaxmo=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
