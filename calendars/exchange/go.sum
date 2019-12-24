@@ -2,8 +2,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/byuoitav/calendar-api-microservice v0.0.0-20191213181620-5b52f1cc0827/go.mod h1:krU+QPh00cGp+1cSnC9UU6yVIAuovb4TgiEDtjJ3X3c=
 github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d h1:F3/vBL2hw+zjCm78sWss6eCozj5IopBzN2bIHvKj2hw=
 github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d/go.mod h1:YTDTFEmez7HU3oyCIWjU3RfQ/P6v24LEzH5YUebph7I=
-github.com/byuoitav/exchange-calendar v0.0.3 h1:pdyWIODrQkKtQT1P6eqJvr6KeNHjdcHeAXh7NNM38mQ=
-github.com/byuoitav/exchange-calendar v0.0.3/go.mod h1:X7kFOk7+PuyeYYvXbYSP5hSnWHLq2gUGVQASniQCez0=
+github.com/byuoitav/exchange-calendar v0.0.4 h1:qCNTEFhFriL9kptJQioINfm9Xyjcmdrr0hHO93sZMtc=
+github.com/byuoitav/exchange-calendar v0.0.4/go.mod h1:X7kFOk7+PuyeYYvXbYSP5hSnWHLq2gUGVQASniQCez0=
 github.com/byuoitav/scheduler v0.0.2/go.mod h1:NsOXE7OiVVSuiwD2NJctJWMRgaJDnKDwSedUbeyaxmo=
 github.com/byuoitav/scheduler v0.0.6 h1:yXPhMBdUR7m6mF+F4C/CrMIV0yGGDVa/gVsi3KeuzSI=
 github.com/byuoitav/scheduler v0.0.6/go.mod h1:5iDIHeT5//PuWJcXaADsJCgvmxC89jEW+zmdX6mUOIg=
