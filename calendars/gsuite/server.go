@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/url"
 	"os"
 
 	"github.com/byuoitav/gsuite-calendar"
@@ -29,10 +30,15 @@ func main() {
 
 	create := func(ctx context.Context, roomID string) (calendars.Calendar, error) {
 		// TODO add logic to make sure they are set?
+		urlDecodedRoomID, err := url.QueryUnescape(roomID)
+		if err != nil {
+			//Idk
+		}
+
 		cal := &gsuite.Calendar{
 			UserEmail:       os.Getenv("G_SUITE_EMAIL"),
 			CredentialsPath: os.Getenv("G_SUITE_CREDENTIALS"),
-			RoomID:          roomID,
+			RoomID:          urlDecodedRoomID,
 		}
 
 		switch {

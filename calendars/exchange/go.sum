@@ -4,6 +4,8 @@ github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d h1:F3/vBL2hw+zjCm7
 github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d/go.mod h1:YTDTFEmez7HU3oyCIWjU3RfQ/P6v24LEzH5YUebph7I=
 github.com/byuoitav/exchange-calendar v0.0.4 h1:qCNTEFhFriL9kptJQioINfm9Xyjcmdrr0hHO93sZMtc=
 github.com/byuoitav/exchange-calendar v0.0.4/go.mod h1:X7kFOk7+PuyeYYvXbYSP5hSnWHLq2gUGVQASniQCez0=
+github.com/byuoitav/exchange-calendar v0.0.5 h1:ksQgJrHRLrq48KoA0vV4HBmCZWCoM9kJKm2jYFCalD0=
+github.com/byuoitav/exchange-calendar v0.0.5/go.mod h1:X7kFOk7+PuyeYYvXbYSP5hSnWHLq2gUGVQASniQCez0=
 github.com/byuoitav/scheduler v0.0.2/go.mod h1:NsOXE7OiVVSuiwD2NJctJWMRgaJDnKDwSedUbeyaxmo=
 github.com/byuoitav/scheduler v0.0.6 h1:yXPhMBdUR7m6mF+F4C/CrMIV0yGGDVa/gVsi3KeuzSI=
 github.com/byuoitav/scheduler v0.0.6/go.mod h1:5iDIHeT5//PuWJcXaADsJCgvmxC89jEW+zmdX6mUOIg=

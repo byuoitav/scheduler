@@ -5,6 +5,10 @@ cloud.google.com/go v0.38.0/go.mod h1:990N+gfupTy94rShfmMCWGDn0LpTmnzTp2qbd1dvSR
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/byuoitav/gsuite-calendar v0.0.3 h1:t8C2OwBK9FshqtDB8CVNw4xr4xKrTQuC+VQAO1n1R40=
 github.com/byuoitav/gsuite-calendar v0.0.3/go.mod h1:fC5N4d3J8IcmmkZX94BZqmhwjbjPilltUiDyjnXw0tw=
+github.com/byuoitav/gsuite-calendar v0.0.4 h1:fOVXfgPR9EMhYB+I4lniKi/Q99C5ZL319f+aEdR/e+o=
+github.com/byuoitav/gsuite-calendar v0.0.4/go.mod h1:fC5N4d3J8IcmmkZX94BZqmhwjbjPilltUiDyjnXw0tw=
+github.com/byuoitav/gsuite-calendar v0.0.5 h1:t4Ta/IcWN7x6SBYDMAOb7ou9P5SenpJnpuJSfFXB6Cc=
+github.com/byuoitav/gsuite-calendar v0.0.5/go.mod h1:fC5N4d3J8IcmmkZX94BZqmhwjbjPilltUiDyjnXw0tw=
 github.com/byuoitav/scheduler v0.0.5/go.mod h1:cBmut1tDMqEyrn9Hk1E+kIOnGBH0eE/1SjhL/ndRmiE=
 github.com/byuoitav/scheduler v0.0.6 h1:yXPhMBdUR7m6mF+F4C/CrMIV0yGGDVa/gVsi3KeuzSI=
 github.com/byuoitav/scheduler v0.0.6/go.mod h1:5iDIHeT5//PuWJcXaADsJCgvmxC89jEW+zmdX6mUOIg=
