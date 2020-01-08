@@ -15,7 +15,7 @@ endif
 PKG_LIST := $(go list ${PKG}/...)
 
 # docker stuff
-IMAGE := ${DOCKER_URL}/${OWNER}/${NAME}:${VERSION}
+IMAGE := ${DOCKER_URL}/${OWNER}/scheduler/${NAME}:${VERSION}
 
 .PHONY: all deps deploy docker-linux-amd64 docker-linux-arm
 
