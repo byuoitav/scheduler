@@ -1,6 +1,7 @@
 package schedule
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -67,11 +68,17 @@ func CreateEvent(ctx context.Context, roomID string, event calendars.Event) erro
 		return fmt.Errorf("unable to get schedule config: %w", err)
 	}
 
+	requestBody, err := json.Marshal(event)
+	if err != nil {
+		return fmt.Errorf("unable to marshal event into json: %w", err)
+	}
+
 	// build request
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, config.CalendarURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, config.CalendarURL, bytes.NewBuffer(requestBody))
 	if err != nil {
 		return fmt.Errorf("unable to build event request: %w", err)
 	}
+	req.Header.Set("Content-type", "application/json")
 
 	// make http request
 	resp, err := http.DefaultClient.Do(req)
