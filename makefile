@@ -47,7 +47,7 @@ deploy: docker-linux-amd64 docker-linux-arm
 	@docker push ${IMAGE}-linux-arm
 
 dist/web-dist:
-	@cd web && npm install && ng build --prod --aot --build-optimizer
+	@cd web && npm install && npm run-script build
 	@mkdir -p dist
 	@mv web/dist dist/web-dist
 

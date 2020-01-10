@@ -81,10 +81,8 @@ func main() {
 	})
 
 	// serve ui
-	e.Group("/", middleware.StaticWithConfig(middleware.StaticConfig{
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:   "web-dist",
-		Index:  "index.html",
-		HTML5:  true,
 		Browse: true,
 	}))
 
