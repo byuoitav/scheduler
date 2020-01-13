@@ -58,5 +58,5 @@ func CreateEvent(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, fmt.Sprintf("unable to create event %q in %q: %s", event.Title, roomID, err))
 	}
 
-	return c.String(http.StatusOK, fmt.Sprintf("Successfully created %q in %q", event.Title, roomID))
+	return c.JSON(http.StatusOK, fmt.Sprintf("Successfully created %q in %q", event.Title, roomID))
 }

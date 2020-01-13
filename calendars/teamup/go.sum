@@ -6,6 +6,8 @@ github.com/byuoitav/teamup-calendar v0.0.3 h1:7njVZht53QwKs31K7xziz7KyHouze5UneE
 github.com/byuoitav/teamup-calendar v0.0.3/go.mod h1:R07QaC/3h8C0DfhhIQaZq2lGcp8H8iEz3lqoJr2Dfaw=
 github.com/byuoitav/teamup-calendar v0.0.4 h1:pGH/siLShNLgrMypfDIvI0Cca5BVDKyRgmFi3NcsoKo=
 github.com/byuoitav/teamup-calendar v0.0.4/go.mod h1:R07QaC/3h8C0DfhhIQaZq2lGcp8H8iEz3lqoJr2Dfaw=
+github.com/byuoitav/teamup-calendar v0.0.5 h1:Zdi4LhuHa8BA43asDoYMdFIKC5K77blGVJbOSx+Czoc=
+github.com/byuoitav/teamup-calendar v0.0.5/go.mod h1:R07QaC/3h8C0DfhhIQaZq2lGcp8H8iEz3lqoJr2Dfaw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
