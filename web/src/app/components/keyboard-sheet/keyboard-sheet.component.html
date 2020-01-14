@@ -1,2 +1,2 @@
-<input matInput [value]="eventTitleValue" class="user-input" spellcheck="false" #eventInput>
+<input matInput [value]="eventTitleValue" class="user-input" spellcheck="false" (blur)="onBlur($event)" #eventInput autofocus />
 <div class="simple-keyboard"></div>

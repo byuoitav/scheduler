@@ -141,7 +141,37 @@ export class DataService {
     );
   };
 
-  submitNewEvent = async (event: ScheduledEvent): Promise<boolean> => {
+  // submitNewEvent = async (event: ScheduledEvent) => {
+  //   const url =
+  //     this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
+  //   console.log("Submitting new event to ", url);
+  //   const httpHeaders = {
+  //     headers: new HttpHeaders({
+  //       "Content-Type": "application/json"
+  //     })
+  //   };
+
+  //   const body = new OutputEvent();
+  //   body.title = event.title;
+  //   body.startTime = moment(event.startTime).format("YYYY-MM-DDTHH:mm:ssZ");
+  //   body.endTime = moment(event.endTime).format("YYYY-MM-DDTHH:mm:ssZ");
+
+  //   await this.http.post(url, body, httpHeaders).subscribe(
+  //     data => {
+  //       console.log("Event submitted");
+  //       console.log(data);
+  //       this.getScheduleData();
+  //     },
+  //     err => {
+  //       setTimeout(() => {
+  //         console.error("failed to send event", err);
+  //         this.submitNewEvent(event);
+  //       }, 5000);
+  //     }
+  //   );
+  // };
+
+  submitNewEvent(event: ScheduledEvent): boolean {
     const url =
       this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
     console.log("Submitting new event to ", url);
@@ -156,7 +186,7 @@ export class DataService {
     body.startTime = moment(event.startTime).format("YYYY-MM-DDTHH:mm:ssZ");
     body.endTime = moment(event.endTime).format("YYYY-MM-DDTHH:mm:ssZ");
 
-    await this.http.post(url, body, httpHeaders).subscribe(
+    this.http.post(url, body, httpHeaders).subscribe(
       data => {
         console.log("Event submitted");
         console.log(data);
@@ -164,12 +194,10 @@ export class DataService {
         return true;
       },
       err => {
-        setTimeout(() => {
-          console.error("failed to send event", err);
-          this.submitNewEvent(event);
-        }, 5000);
+        console.log("failed to sent event", err);
+        return false;
       }
     );
     return false;
-  };
+  }
 }
