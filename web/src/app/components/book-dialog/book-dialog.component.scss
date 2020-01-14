@@ -1,0 +1,19 @@
+.dialog-wrapper {
+  padding: 25px;
+}
+
+.spinner-wrapper {
+  padding-left: 125px;
+  display: flex;
+  justify-items: center;
+}
+
+.message {
+  padding-top: 25px;
+  text-align: center;
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #3f51b5;
+}

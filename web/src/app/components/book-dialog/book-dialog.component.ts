@@ -7,12 +7,14 @@ import { MatDialogRef } from '@angular/material';
   styleUrls: ['./book-dialog.component.scss']
 })
 export class BookDialogComponent implements OnInit {
+  message: string;
 
   constructor(public dialogRef: MatDialogRef<BookDialogComponent>) { }
 
-
-
   ngOnInit() {
+    this.message = 'Submitting event...';
   }
+
+
 
 }
