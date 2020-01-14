@@ -141,7 +141,7 @@ export class DataService {
     );
   };
 
-  submitNewEvent = async (event: ScheduledEvent) => {
+  submitNewEvent = async (event: ScheduledEvent): Promise<boolean> => {
     const url =
       this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
     console.log("Submitting new event to ", url);
@@ -161,6 +161,7 @@ export class DataService {
         console.log("Event submitted");
         console.log(data);
         this.getScheduleData();
+        return true;
       },
       err => {
         setTimeout(() => {
@@ -169,5 +170,6 @@ export class DataService {
         }, 5000);
       }
     );
+    return false;
   };
 }

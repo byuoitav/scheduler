@@ -30,6 +30,7 @@ import { KeyboardSheetComponent } from './components/keyboard-sheet/keyboard-she
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { APP_BASE_HREF } from '@angular/common';
+import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { APP_BASE_HREF } from '@angular/common';
     BookPageComponent,
     SchedulePageComponent,
     ScheduleListComponent,
-    KeyboardSheetComponent
+    KeyboardSheetComponent,
+    BookDialogComponent
   ],
   imports: [
     BrowserModule,
