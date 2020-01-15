@@ -17,3 +17,21 @@
 .mat-spinner circle {
   stroke: #3f51b5;
 }
+
+.icon-wrapper {
+  padding-left: 75px;
+  display: flex;
+  justify-items: center;
+}
+
+.success-icon {
+  height: 200px;
+  width: 200px;
+  color: #74be06;
+}
+
+.failure-icon {
+  height: 200px;
+  width: 200px;
+  color: #e94037;
+}

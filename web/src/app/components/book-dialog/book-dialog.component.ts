@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatIconRegistry } from '@angular/material';
 import { ScheduledEvent, DataService } from 'src/app/services/data/data.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-book-dialog',
@@ -10,26 +11,39 @@ import { ScheduledEvent, DataService } from 'src/app/services/data/data.service'
 export class BookDialogComponent implements OnInit {
   message: string;
   response: boolean;
+  status: string = 'submit';
 
   constructor(private dataService: DataService,
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
     public dialogRef: MatDialogRef<BookDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ScheduledEvent) { }
+    @Inject(MAT_DIALOG_DATA) public data: ScheduledEvent) {
+    this.dialogRef.disableClose = true;
+    this.dialogRef.backdropClick().subscribe(result => {
+      this.dialogRef.close(this.status);
+    });
+
+    this.iconRegistry.addSvgIcon('check-mark', sanitizer.bypassSecurityTrustResourceUrl('assets/check.svg'));
+    this.iconRegistry.addSvgIcon('x-mark', this.sanitizer.bypassSecurityTrustResourceUrl('assets/close.svg'));
+  }
 
   ngOnInit() {
     this.message = 'Submitting event...';
-    // if (this.dataService.submitNewEvent(this.data)) {
-    //   this.onSuccess();
-    // } else {
-
-    // }
+    if (this.dataService.submitNewEvent(this.data)) {
+      this.onSuccess();
+    } else {
+      this.onFailure();
+    }
   }
 
   onSuccess() {
-    this.message = '';
+    this.status = 'success';
+    this.message = 'Event submitted successfully';
   }
 
   onFailure() {
-    this.message = '';
+    this.status = 'failure';
+    this.message = 'Event failed to submit, please try again';
   }
 
 }

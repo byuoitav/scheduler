@@ -82,8 +82,7 @@ export class BookPageComponent implements OnInit {
     let bookEvent = this.getEventData();
     if (bookEvent != null) {
       console.log("New event: ", bookEvent);
-      this.dataService.submitNewEvent(bookEvent);
-      this.routeToMain();
+      this.openBookDialog(bookEvent);
     } else {
       console.log("Null event");
     }
@@ -149,6 +148,9 @@ export class BookPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Book dialog was closed');
+      if (result == 'success') {
+        this.routeToMain();
+      }
     });
   }
 

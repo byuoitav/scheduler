@@ -1,6 +1,20 @@
 <div class="dialog-wrapper">
-    <div class="spinner-wrapper">
-        <mat-spinner [diameter]="100"></mat-spinner>
+    <div class="status-image" [ngSwitch]="status">
+        <ng-container *ngSwitchCase="'submit'">
+            <div class="spinner-wrapper">
+                <mat-spinner [diameter]="100"></mat-spinner>
+            </div>
+        </ng-container>
+        <div *ngSwitchCase="'success'">
+            <div class="icon-wrapper">
+                <mat-icon svgIcon="check-mark" class="success-icon"></mat-icon>
+            </div>
+        </div>
+        <div *ngSwitchCase="'failure'">
+            <div class="icon-wrapper">
+                <mat-icon svgIcon="x-mark" class="failure-icon"></mat-icon>
+            </div>
+        </div>
     </div>
     <p class="message">{{ message }}</p>
 </div>
