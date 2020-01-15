@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import * as moment from "moment/moment";
+import { Observable } from 'rxjs';
 
 export class RoomStatus {
   roomName: string;
@@ -141,37 +142,7 @@ export class DataService {
     );
   };
 
-  // submitNewEvent = async (event: ScheduledEvent) => {
-  //   const url =
-  //     this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
-  //   console.log("Submitting new event to ", url);
-  //   const httpHeaders = {
-  //     headers: new HttpHeaders({
-  //       "Content-Type": "application/json"
-  //     })
-  //   };
-
-  //   const body = new OutputEvent();
-  //   body.title = event.title;
-  //   body.startTime = moment(event.startTime).format("YYYY-MM-DDTHH:mm:ssZ");
-  //   body.endTime = moment(event.endTime).format("YYYY-MM-DDTHH:mm:ssZ");
-
-  //   await this.http.post(url, body, httpHeaders).subscribe(
-  //     data => {
-  //       console.log("Event submitted");
-  //       console.log(data);
-  //       this.getScheduleData();
-  //     },
-  //     err => {
-  //       setTimeout(() => {
-  //         console.error("failed to send event", err);
-  //         this.submitNewEvent(event);
-  //       }, 5000);
-  //     }
-  //   );
-  // };
-
-  submitNewEvent(event: ScheduledEvent): boolean {
+  submitNewEvent(event: ScheduledEvent): Observable<Object> {
     const url =
       this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
     console.log("Submitting new event to ", url);
@@ -186,18 +157,6 @@ export class DataService {
     body.startTime = moment(event.startTime).format("YYYY-MM-DDTHH:mm:ssZ");
     body.endTime = moment(event.endTime).format("YYYY-MM-DDTHH:mm:ssZ");
 
-    this.http.post(url, body, httpHeaders).subscribe(
-      data => {
-        console.log("Event submitted");
-        console.log(data);
-        this.getScheduleData();
-        return true;
-      },
-      err => {
-        console.log("failed to sent event", err);
-        return false;
-      }
-    );
-    return false;
+    return this.http.post(url, body, httpHeaders);
   }
 }

@@ -29,11 +29,18 @@ export class BookDialogComponent implements OnInit {
 
   ngOnInit() {
     this.message = 'Submitting event...';
-    if (this.dataService.submitNewEvent(this.data)) {
-      this.onSuccess();
-    } else {
-      this.onFailure();
-    }
+    this.dataService.submitNewEvent(this.data).subscribe(
+      data => {
+        console.log("Event submitted");
+        console.log(data);
+        this.dataService.getScheduleData();
+        this.onSuccess();
+      },
+      err => {
+        console.log("failed to sent event", err);
+        this.onFailure();
+      }
+    );
   }
 
   onSuccess() {

@@ -143,7 +143,7 @@ export class BookPageComponent implements OnInit {
     const dialogRef = this.bookDialog.open(BookDialogComponent, {
       width: '400px',
       panelClass: 'custom-dialog-container',
-      data: ScheduledEvent
+      data: event
     });
 
     dialogRef.afterClosed().subscribe(result => {
