@@ -16,7 +16,7 @@ export class KeyboardSheetComponent implements OnInit {
 
   private keyboard: Keyboard;
   eventTitleValue: string = "";
-  isShift: boolean = false;
+  isShift: boolean = true;
 
   constructor(private bottomSheetRef: MatBottomSheetRef<KeyboardSheetComponent>) { }
 
@@ -51,6 +51,7 @@ export class KeyboardSheetComponent implements OnInit {
         "{shift}": "Shift"
       }
     });
+    this.handleShift();
   }
 
   onChange = (input: string) => {
@@ -78,6 +79,10 @@ export class KeyboardSheetComponent implements OnInit {
       layoutName: shiftToggle
     });
   };
+
+  onBlur(event) {
+    this.eventTitle.nativeElement.focus();
+  }
 
 }
 

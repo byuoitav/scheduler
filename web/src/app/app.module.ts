@@ -18,7 +18,9 @@ import {
   MatSelectModule,
   MatFormFieldModule,
   MatBottomSheetModule,
-  MatInputModule
+  MatInputModule,
+  MatDialogModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 import { TimeComponent } from './components/time/time.component';
@@ -29,7 +31,7 @@ import { ScheduleListComponent } from './components/schedule-list/schedule-list.
 import { KeyboardSheetComponent } from './components/keyboard-sheet/keyboard-sheet.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { APP_BASE_HREF } from '@angular/common';
+import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { APP_BASE_HREF } from '@angular/common';
     BookPageComponent,
     SchedulePageComponent,
     ScheduleListComponent,
-    KeyboardSheetComponent
+    KeyboardSheetComponent,
+    BookDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,11 +60,12 @@ import { APP_BASE_HREF } from '@angular/common';
     MatFormFieldModule,
     MatBottomSheetModule,
     MatInputModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [KeyboardSheetComponent],
-  // providers: [{ provide: APP_BASE_HREF, useValue: '/web' }],
+  entryComponents: [KeyboardSheetComponent, BookDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

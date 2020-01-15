@@ -5,9 +5,10 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
 import { SelectTime, BookService } from 'src/app/services/book/book.service';
-import { MatBottomSheet } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { KeyboardSheetComponent } from '../keyboard-sheet/keyboard-sheet.component';
 import { FormControl } from '@angular/forms';
+import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 
 @Component({
   selector: 'app-book-page',
@@ -33,7 +34,8 @@ export class BookPageComponent implements OnInit {
     private router: Router,
     private usrIdle: UserIdleService,
     private bookService: BookService,
-    private bottomSheet: MatBottomSheet) {
+    private bottomSheet: MatBottomSheet,
+    public bookDialog: MatDialog) {
 
     this.matIconRegistry.addSvgIcon(
       "BackArrow",
@@ -80,8 +82,7 @@ export class BookPageComponent implements OnInit {
     let bookEvent = this.getEventData();
     if (bookEvent != null) {
       console.log("New event: ", bookEvent);
-      this.dataService.submitNewEvent(bookEvent);
-      this.routeToMain();
+      this.openBookDialog(bookEvent);
     } else {
       console.log("Null event");
     }
@@ -136,6 +137,21 @@ export class BookPageComponent implements OnInit {
       if (!this.timeIncrements[i].validStart) return (endId - 1);
     }
     return startId;
+  }
+
+  openBookDialog(event: ScheduledEvent): void {
+    const dialogRef = this.bookDialog.open(BookDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Book dialog was closed');
+      if (result == 'success') {
+        this.routeToMain();
+      }
+    });
   }
 
 }
