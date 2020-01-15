@@ -41,6 +41,9 @@ export class BookDialogComponent implements OnInit {
         this.onFailure();
       }
     );
+    setTimeout(() => {
+      this.dialogRef.close(this.status);
+    }, 2000);
   }
 
   onSuccess() {
