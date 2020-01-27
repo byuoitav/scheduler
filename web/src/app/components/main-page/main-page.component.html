@@ -26,9 +26,11 @@
       <mat-icon svgIcon="Calendar" class="button-icon"></mat-icon>
       VIEW SCHEDULE
     </button>
-    <button mat-stroked-button class="footer-button" (click)="routeToBook()">
-      <mat-icon svgIcon="Plus" class="button-icon"></mat-icon>
-      BOOK NOW
-    </button>
+    <div *ngIf="status.displayBookNow">
+      <button mat-stroked-button class="footer-button" (click)="routeToBook()">
+        <mat-icon svgIcon="Plus" class="button-icon"></mat-icon>
+        BOOK NOW
+      </button>
+    </div>
   </mat-toolbar-row>
 </mat-toolbar>
