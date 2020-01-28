@@ -15,7 +15,9 @@
     <app-time></app-time>
   </mat-grid-tile>
   <mat-grid-tile colspan="5" class="grid-tile-event">
-    <span class="current-event" *ngIf="status.unoccupied == false">{{ currentEvent.title }}</span>
+    <div *ngIf="status.displayTitle">
+      <span class="current-event" *ngIf="status.unoccupied == false">{{ currentEvent.title }}</span>
+    </div>
   </mat-grid-tile>
 </mat-grid-list>
 
