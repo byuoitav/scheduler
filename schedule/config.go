@@ -22,7 +22,8 @@ type Config struct {
 	BackgroundURL string `json:"backgroundURL"`
 
 	// functionality
-	CanCreateEvents bool `json:"canCreateEvents"`
+	CanCreateEvents     bool `json:"canCreateEvents"`
+	DisplayMeetingTitle bool `json:"displayMeetingTitle"`
 
 	// how to get events - from one of our calendars (gsuite, exchange, etc.)
 	CalendarURL string `json:"calendarURL"`
