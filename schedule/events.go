@@ -60,8 +60,9 @@ func GetEvents(ctx context.Context, roomID string) ([]calendars.Event, error) {
 
 	// when display title is false, set all meeting titles to empty string
 	if !config.DisplayMeetingTitle {
-		for _, event := range events {
-			event.Title = ""
+		log.P.Info("Hide Meeting Title")
+		for i, _ := range events {
+			events[i].Title = ""
 		}
 	}
 
