@@ -119,6 +119,7 @@ export class BookPageComponent implements OnInit {
   checkEndTime(startId: number, endId: number): number {
     if (endId == undefined) return (startId + 1);
     if (startId >= endId) return (startId + 1);
+    if (endId > startId + 4) return (startId + 1); // Only allow a meeting to be max 2 hours
     for (let i = startId + 1; i < endId; i++) {
       if (!this.timeIncrements[i].validEnd) return (startId + 1);
     }
@@ -133,6 +134,7 @@ export class BookPageComponent implements OnInit {
   checkStartTime(startId: number, endId: number): number {
     if (startId == null) return (endId - 1);
     if (startId >= endId) return (endId - 1);
+    if (startId < endId - 4) return (endId - 1); // Only allow a meeting to be max 2 hours
     for (let i = startId + 1; i < endId; i++) {
       if (!this.timeIncrements[i].validStart) return (endId - 1);
     }

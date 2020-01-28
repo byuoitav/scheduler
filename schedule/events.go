@@ -58,6 +58,14 @@ func GetEvents(ctx context.Context, roomID string) ([]calendars.Event, error) {
 		return events[i].StartTime.Before(events[j].StartTime)
 	})
 
+	// when display title is false, set all meeting titles to empty string
+	if !config.DisplayMeetingTitle {
+		log.P.Info("Hide Meeting Title")
+		for i, _ := range events {
+			events[i].Title = ""
+		}
+	}
+
 	return events, nil
 }
 
