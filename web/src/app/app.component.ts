@@ -16,4 +16,9 @@ export class AppComponent {
 
     return this.sanitizer.bypassSecurityTrustStyle(background);
   }
+
+  get customStyle() {
+    const url = this.data.getStylesheet();
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
 }

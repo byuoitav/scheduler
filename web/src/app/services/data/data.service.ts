@@ -73,6 +73,17 @@ export class DataService {
     return "assets/YMountain.png";
   }
 
+  getStylesheet(): string {
+    if (
+      this.config &&
+      this.config.hasOwnProperty("style-url") &&
+      this.config["style-url"] != ""
+    ) {
+      return this.config["style-url"];
+    }
+    return "assets/custom.css";
+  }
+
   getRoomStatus(): RoomStatus {
     return this.status;
   }
