@@ -1,0 +1,49 @@
+:root {
+  /* available/unavailable colors */
+
+  --room-available-color: #74be06;
+  --room-unavailable-color: #e94037;
+
+  /* text colors */
+
+  --time-card-color: white;
+  --toolbar-text-color: white;
+
+  /* main page */
+
+  --room-title-color: white;
+  --footer-background-color: rgba(0, 0, 0, 0.2);
+  --button-background-color: rgba(0, 0, 0, 0.4);
+  --button-text-color: white;
+  --button-border-color: white;
+  --meeting-title-color: white;
+
+  /* schedule page */
+
+  --empty-schedule-message-color: white;
+  --schedule-event-title-color: white;
+  --schedule-event-time-interval-color: grey;
+  --schedule-event-background-color: rgba(0, 0, 0, 0.5);
+
+  /* booking page */
+
+  --booking-toolbar-color: white;
+  --booking-button-text-color: white;
+  --booking-button-border-color: white;
+  --booking-button-background-color: rgba(0, 0, 0, 0.4);
+  --booking-window-background-color: rgba(0, 0, 0, 0.5);
+  --booking-window-label-color: white;
+  --booking-window-event-text-color: white;
+  --booking-window-event-background-color: rgba(40, 40, 40, 0.5);
+  --booking-select-color: white;
+  --booking-select-window-background-color: #424242;
+  --booking-select-options-color: white;
+  --booking-spinner-color: #3f51b5;
+  --booking-success-color: #74be06;
+  --booking-failure-color: #e94037;
+
+  /* fonts */
+
+  --main-font: Roboto;
+  --button-font: Roboto Slab;
+}

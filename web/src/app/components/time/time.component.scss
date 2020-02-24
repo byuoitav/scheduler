@@ -10,12 +10,12 @@
 .time-card-time {
   text-align: right;
   font-size: 94px;
-  color: white;
+  color: var(--time-card-color);
   margin: 0;
 }
 
 .time-card-date {
   text-align: right;
   font-size: 28px;
-  color: white;
+  color: var(--time-card-color);
 }
