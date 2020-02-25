@@ -18,8 +18,9 @@ type Config struct {
 	Rev string `json:"_rev"`
 
 	// visual appearance
-	DisplayName   string `json:"displayName"`
-	BackgroundURL string `json:"backgroundURL"`
+	DisplayName string `json:"displayName"`
+	ImageURL    string `json:"image-url"`
+	StyleURL    string `json:"style-url"`
 
 	// functionality
 	CanCreateEvents     bool `json:"canCreateEvents"`

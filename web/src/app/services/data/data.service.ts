@@ -43,8 +43,6 @@ export class DataService {
     this.port = base[2];
     console.log(this.port);
 
-    this.getConfig();
-
     this.status = {
       roomName: "",
       deviceName: "",
@@ -53,6 +51,8 @@ export class DataService {
       displayBookNow: true,
       displayTitle: true
     };
+
+    this.getConfig();
 
     this.getScheduleData();
     setInterval(() => {
