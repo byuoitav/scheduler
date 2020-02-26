@@ -43,8 +43,6 @@ export class DataService {
     this.port = base[2];
     console.log(this.port);
 
-    this.getConfig();
-
     this.status = {
       roomName: "",
       deviceName: "",
@@ -53,6 +51,8 @@ export class DataService {
       displayBookNow: true,
       displayTitle: true
     };
+
+    this.getConfig();
 
     this.getScheduleData();
     setInterval(() => {
@@ -71,6 +71,17 @@ export class DataService {
     }
 
     return "assets/YMountain.png";
+  }
+
+  getStylesheet(): string {
+    if (
+      this.config &&
+      this.config.hasOwnProperty("style-url") &&
+      this.config["style-url"] != ""
+    ) {
+      return this.config["style-url"];
+    }
+    return "assets/custom.css";
   }
 
   getRoomStatus(): RoomStatus {

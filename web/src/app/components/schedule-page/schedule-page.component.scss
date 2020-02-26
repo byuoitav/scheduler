@@ -1,15 +1,15 @@
 .availability-toolbar {
-  background-color: #74be06;
-  height: 70px;
-  color: white;
+  background-color: var(--room-available-color);
+  height: 55px;
+  color: var(--toolbar-text-color);
   font-size: 28px;
   font-style: oblique;
 }
 
 .back-button {
   background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  color: var(--toolbar-text-color);
+  border: 2px solid var(--toolbar-text-color);
   padding: 0px;
 }
 
@@ -29,7 +29,7 @@ app-time {
 }
 
 .empty-schedule-message {
-  color: white;
+  color: var(--empty-schedule-message-color);
   font-size: 24px;
   text-align: center;
   padding-top: 35%;

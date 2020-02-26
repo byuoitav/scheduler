@@ -1,15 +1,15 @@
 .availability-toolbar {
-  background-color: #74be06;
-  height: 70px;
-  color: white;
+  background-color: var(--room-available-color);
+  height: 55px;
+  color: var(--toolbar-text-color);
   font-size: 28px;
   font-style: oblique;
 }
 
 .back-button {
   background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  color: var(--toolbar-text-color);
+  border: 2px solid var(--toolbar-text-color);
   padding: 0px;
 }
 
@@ -25,18 +25,17 @@ app-time {
 
 app-time {
   margin-right: 10%;
-  margin-top: 30px;
 }
 
 .main-button {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: white;
-  border: 2px, solid, white;
+  background-color: var(--booking-button-background-color);
+  color: var(--booking-button-text-color);
+  border: 2px, solid, var(--booking-button-border-color);
   margin-left: 5px;
   margin-right: 5px;
   font-size: 20px;
   font-style: bold;
-  font-family: Roboto Slab;
+  font-family: var(--button-font);
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -46,7 +45,7 @@ app-time {
 }
 
 .book-window-card {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--booking-window-background-color);
   height: 80%;
   width: 100%;
   margin-top: 2%;
@@ -55,7 +54,7 @@ app-time {
 
 .event-label {
   font-size: 24px;
-  color: white;
+  color: var(--booking-window-label-color);
   padding: 0 0 3% 20px;
   margin: 0;
 }
@@ -67,11 +66,11 @@ app-time {
 
 .event-title-text {
   width: 100%;
-  color: white;
-  background-color: rgba(40, 40, 40, 0.5);
+  color: var(--booking-window-event-text-color);
+  background-color: var(--booking-window-event-background-color);
   font-size: 24px;
   border: none;
-  font-family: serif;
+  font-family: var(--main-font);
   padding: 20px;
 }
 
@@ -80,24 +79,24 @@ app-time {
   padding-top: 14%;
   padding-left: 25px;
   margin-top: 5%;
-  color: white;
+  color: var(--booking-select-color);
 }
 
 .select-start-time {
   margin-right: 8%;
   padding: 10px;
   width: 39% !important;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--booking-select-color);
 }
 
 .select-end-time {
   padding: 10px;
   width: 39% !important;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--booking-select-color);
 }
 
 mat-option {
-  background-color: #424242;
+  background-color: var(--booking-select-window-background-color);
   width: 100%;
   padding: 10px;
 }
@@ -105,6 +104,6 @@ mat-option {
 mat-select,
 mat-option,
 mat-placeholder {
-  color: white;
+  color: var(--booking-select-options-color);
   font-size: 20px;
 }

@@ -6,7 +6,7 @@
   <span class="schedule-title">{{ status.roomName }} Schedule</span>
 </mat-toolbar>
 
-<mat-grid-list cols="5" rowHeight="136px">
+<mat-grid-list cols="5" rowHeight="141px">
   <mat-grid-tile colspan="3" rowspan="3">
     <cdk-virtual-scroll-viewport itemSize="3" class="schedule-scroll-list">
       <span *ngIf="status.emptySchedule === false; else elseBlock">

@@ -1,15 +1,15 @@
 .event-card {
-  color: white;
+  color: var(--schedule-event-title-color);
   font-size: 18px;
-  font-family: serif;
+  font-family: var(--main-font);
   font-style: bold;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--schedule-event-background-color);
   margin-bottom: 1%;
   padding-bottom: 10%;
 }
 
 mat-card-content {
-  color: grey;
+  color: var(--schedule-event-time-interval-color);
   padding-top: 3%;
   font-size: 18px;
 }
