@@ -42,7 +42,7 @@ export class DataService {
     console.log(this.url);
     this.port = base[2];
     console.log(this.port);
-    if (this.port == "undefined") {
+    if (this.port == undefined) {
       this.port = "80";
     }
 
