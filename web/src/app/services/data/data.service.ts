@@ -37,7 +37,7 @@ export class DataService {
   currentSchedule: ScheduledEvent[] = [];
 
   constructor(private http: HttpClient) {
-    const base = location.origin.split(":");
+    const base = location.host.split(":");
     this.url = base[0] + ":" + base[1];
     console.log(this.url);
     this.port = base[2];
