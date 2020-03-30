@@ -5,4 +5,4 @@ COPY scheduler /scheduler
 COPY web-dist/ /web-dist
 
 ENTRYPOINT [ "/scheduler" ]
-CMD ["-p", "8080"]
+CMD ["-p", "80"]
