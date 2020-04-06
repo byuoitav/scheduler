@@ -1,5 +1,6 @@
 .availability-toolbar {
   height: 55px;
+  font-family: var(--main-font);
 }
 
 .title-card {
@@ -8,6 +9,7 @@
   padding: 10%;
   margin-top: 15%;
   background-color: transparent;
+  font-family: var(--main-font);
 }
 
 .room-title {
@@ -16,7 +18,6 @@
 }
 
 .room-availability {
-  color: var(--room-available-color);
   font-size: 64px;
 }
 

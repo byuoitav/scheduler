@@ -19,7 +19,7 @@ IMAGE := ${DOCKER_URL}/${OWNER}/scheduler/${NAME}:${VERSION}
 
 .PHONY: all deps deploy docker-linux-amd64 docker-linux-arm
 
-all: clean deps dist/${NAME}-linux-amd64
+all: clean deps dist/${NAME}-linux-amd64 dist/web-dist
 
 deps:
 	@go mod download
