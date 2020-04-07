@@ -1,4 +1,5 @@
-<mat-toolbar class="availability-toolbar" [ngStyle]="{'background-color': status.unoccupied? '#74be06' : '#E94037'}">
+<mat-toolbar class="availability-toolbar"
+  [ngStyle]="{'background-color': status.unoccupied? 'var(--room-available-color)' : 'var(--room-unavailable-color)'}">
   <button mat-icon-button class="back-button" (click)="routeToMain()">
     <mat-icon svgIcon="BackArrow" [inline]="true"></mat-icon>
   </button>

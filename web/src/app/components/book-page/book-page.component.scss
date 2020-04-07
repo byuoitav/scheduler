@@ -1,9 +1,9 @@
 .availability-toolbar {
-  background-color: var(--room-available-color);
   height: 55px;
   color: var(--toolbar-text-color);
   font-size: 28px;
   font-style: oblique;
+  font-family: var(--main-font);
 }
 
 .back-button {
@@ -11,6 +11,7 @@
   color: var(--toolbar-text-color);
   border: 2px solid var(--toolbar-text-color);
   padding: 0px;
+  font-family: var(--button-font);
 }
 
 .toolbar-spacing {
@@ -50,6 +51,7 @@ app-time {
   width: 100%;
   margin-top: 2%;
   margin-left: 2%;
+  font-family: var(--main-font);
 }
 
 .event-label {
@@ -87,12 +89,14 @@ app-time {
   padding: 10px;
   width: 39% !important;
   border-bottom: 1px solid var(--booking-select-color);
+  font-family: var(--main-font);
 }
 
 .select-end-time {
   padding: 10px;
   width: 39% !important;
   border-bottom: 1px solid var(--booking-select-color);
+  font-family: var(--main-font);
 }
 
 mat-option {

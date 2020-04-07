@@ -1,9 +1,9 @@
 .availability-toolbar {
-  background-color: var(--room-available-color);
   height: 55px;
   color: var(--toolbar-text-color);
   font-size: 28px;
   font-style: oblique;
+  font-family: var(--main-font);
 }
 
 .back-button {
@@ -11,6 +11,7 @@
   color: var(--toolbar-text-color);
   border: 2px solid var(--toolbar-text-color);
   padding: 0px;
+  font-family: var(--button-font);
 }
 
 .toolbar-spacing {
@@ -31,6 +32,7 @@ app-time {
 .empty-schedule-message {
   color: var(--empty-schedule-message-color);
   font-size: 24px;
+  font-family: var(--main-font);
   text-align: center;
   padding-top: 35%;
   width: 100%;
