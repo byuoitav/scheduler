@@ -71,6 +71,19 @@ func CreateEvent(c echo.Context) error {
 	return c.JSON(http.StatusOK, fmt.Sprintf("Successfully created %q in %q", event.Title, roomID))
 }
 
+func GetStaticElements(c echo.Context) error {
+	docName := c.Param("doc")
+
+	file, fileType, err := schedule.GetStatic(c.Request().Context(), docName)
+	if err != nil {
+		log.P.Error("Unable to get static element", zap.Error(err))
+		return c.String(http.StatusInternalServerError, fmt.Sprintf("unable to get static element"))
+	}
+	defer file.Close()
+
+	return c.Stream(http.StatusOK, fileType, file)
+}
+
 func connectionCheck() {
 	id := localsystem.MustSystemID()
 	deviceInfo := events.GenerateBasicDeviceInfo(id)

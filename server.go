@@ -61,6 +61,9 @@ func main() {
 	// get config for the room
 	e.GET("/config", handlers.GetConfig)
 
+	// get static elements
+	e.GET("/static/:doc", handlers.GetStaticElements)
+
 	// handle load balancer status check
 	e.GET("/status", func(c echo.Context) error {
 		return c.String(http.StatusOK, "healthy")
