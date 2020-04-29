@@ -18,7 +18,7 @@ func main() {
 	var port int
 	var logLevel int
 
-	pflag.IntVarP(&port, "port", "p", 8080, "port to run the server on")
+	pflag.IntVarP(&port, "port", "p", 80, "port to run the server on")
 	pflag.IntVarP(&logLevel, "log-level", "l", 2, "level of logging wanted. 1=DEBUG, 2=INFO, 3=WARN, 4=ERROR, 5=PANIC")
 	pflag.Parse()
 
