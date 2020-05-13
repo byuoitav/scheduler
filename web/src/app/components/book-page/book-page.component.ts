@@ -9,6 +9,7 @@ import { MatBottomSheet, MatDialog } from '@angular/material';
 import { KeyboardSheetComponent } from '../keyboard-sheet/keyboard-sheet.component';
 import { FormControl } from '@angular/forms';
 import { BookDialogComponent } from '../book-dialog/book-dialog.component';
+import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
 
 @Component({
   selector: 'app-book-page',
@@ -35,7 +36,7 @@ export class BookPageComponent implements OnInit {
     private usrIdle: UserIdleService,
     private bookService: BookService,
     private bottomSheet: MatBottomSheet,
-    public bookDialog: MatDialog) {
+    public dialogRef: MatDialog) {
 
     this.matIconRegistry.addSvgIcon(
       "BackArrow",
@@ -84,6 +85,11 @@ export class BookPageComponent implements OnInit {
 
   requestHelp(): void {
     console.log("help requested");
+    const dialog = this.dialogRef.open(HelpDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: event
+    });
   }
 
   saveEventData(): void {
@@ -150,13 +156,13 @@ export class BookPageComponent implements OnInit {
   }
 
   openBookDialog(event: ScheduledEvent): void {
-    const dialogRef = this.bookDialog.open(BookDialogComponent, {
+    const dialog = this.dialogRef.open(BookDialogComponent, {
       width: '400px',
       panelClass: 'custom-dialog-container',
       data: event
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialog.afterClosed().subscribe(result => {
       console.log('Book dialog was closed');
       if (result == 'success') {
         this.routeToMain();

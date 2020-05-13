@@ -4,6 +4,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { Router } from '@angular/router'
 import { UserIdleService } from 'angular-user-idle';
+import { MatDialog } from '@angular/material';
+import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
 
 @Component({
   selector: 'app-schedule-page',
@@ -19,7 +21,8 @@ export class SchedulePageComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
     private router: Router,
-    private usrIdle: UserIdleService) {
+    private usrIdle: UserIdleService,
+    public dialogRef: MatDialog) {
     this.matIconRegistry.addSvgIcon(
       "BackArrow",
       this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/BackArrow.svg")
@@ -49,6 +52,11 @@ export class SchedulePageComponent implements OnInit {
 
   requestHelp(): void {
     console.log("help requested");
+    const dialog = this.dialogRef.open(HelpDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: event
+    });
   }
 
 }

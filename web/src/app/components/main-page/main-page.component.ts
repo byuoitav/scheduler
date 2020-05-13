@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry, MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataService, RoomStatus, ScheduledEvent } from 'src/app/services/data/data.service';
 import { Router } from '@angular/router'
+import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
 
 @Component({
   selector: 'app-main-page',
@@ -16,7 +17,8 @@ export class MainPageComponent implements OnInit {
   constructor(private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
-    private router: Router) {
+    private router: Router,
+    public dialogRef: MatDialog) {
     this.matIconRegistry.addSvgIcon(
       "Calendar",
       this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/CALENDAR.svg")
@@ -47,6 +49,11 @@ export class MainPageComponent implements OnInit {
 
   requestHelp(): void {
     console.log("help requested");
+    const dialogRef = this.dialogRef.open(HelpDialogComponent, {
+      // width: '100vw',
+      // panelClass: 'custom-dialog-container',
+      data: event
+    });
   }
 
   updateStatus(): void {

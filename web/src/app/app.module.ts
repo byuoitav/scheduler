@@ -32,6 +32,7 @@ import { KeyboardSheetComponent } from './components/keyboard-sheet/keyboard-she
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
+import { HelpDialogComponent } from './components/help-dialog/help-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { BookDialogComponent } from './components/book-dialog/book-dialog.compon
     SchedulePageComponent,
     ScheduleListComponent,
     KeyboardSheetComponent,
-    BookDialogComponent
+    BookDialogComponent,
+    HelpDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,7 @@ import { BookDialogComponent } from './components/book-dialog/book-dialog.compon
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [KeyboardSheetComponent, BookDialogComponent],
+  entryComponents: [KeyboardSheetComponent, BookDialogComponent, HelpDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
