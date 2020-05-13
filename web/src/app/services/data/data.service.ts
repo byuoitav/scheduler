@@ -70,7 +70,7 @@ export class DataService {
       this.config.hasOwnProperty("image-url") &&
       this.config["image-url"] != ""
     ) {
-      return this.config["image-url"];
+      return this.url + ":" + this.port + this.config["image-url"];
     }
 
     return "assets/YMountain.png";
@@ -82,7 +82,7 @@ export class DataService {
       this.config.hasOwnProperty("style-url") &&
       this.config["style-url"] != ""
     ) {
-      return this.config["style-url"];
+      return this.url + ":" + this.port + this.config["style-url"];
     }
     return "assets/custom.css";
   }

@@ -24,6 +24,10 @@ export class SchedulePageComponent implements OnInit {
       "BackArrow",
       this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/BackArrow.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      "Help",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/helpOutline.svg")
+    );
 
     this.usrIdle.startWatching();
     this.usrIdle.onTimerStart().subscribe();
@@ -41,6 +45,10 @@ export class SchedulePageComponent implements OnInit {
 
   routeToMain(): void {
     this.router.navigate(['/']);
+  }
+
+  requestHelp(): void {
+    console.log("help requested");
   }
 
 }

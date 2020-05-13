@@ -84,6 +84,10 @@ func GetStaticElements(c echo.Context) error {
 	return c.Stream(http.StatusOK, fileType, file)
 }
 
+func SendHelpRequest(c echo.Context) error {
+	return nil
+}
+
 func connectionCheck() {
 	id := localsystem.MustSystemID()
 	deviceInfo := events.GenerateBasicDeviceInfo(id)

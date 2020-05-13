@@ -23,14 +23,13 @@ export class AppComponent {
 
   getBackground() {
     const url = this.data.getBackground();
-    const background = "url(" + this.data.url + ":" + this.data.port + url + ")";
+    const background = "url(" + url + ")";
     this.background = this.sanitizer.bypassSecurityTrustStyle(background);
   }
 
   getStyles() {
     let url = this.data.getStylesheet();
-    const style = this.data.url + ":" + this.data.port + url;
-    this.customStyle = this.sanitizer.bypassSecurityTrustResourceUrl(style);
+    this.customStyle = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   stopStyleTimer() {

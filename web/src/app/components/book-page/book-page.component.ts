@@ -49,6 +49,10 @@ export class BookPageComponent implements OnInit {
       "Cancel",
       this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/Cancel.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      "Help",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/helpOutline.svg")
+    );
 
     this.usrIdle.startWatching();
     this.usrIdle.onTimerStart().subscribe();
@@ -76,6 +80,10 @@ export class BookPageComponent implements OnInit {
 
   routeToMain(): void {
     this.router.navigate(['/']);
+  }
+
+  requestHelp(): void {
+    console.log("help requested");
   }
 
   saveEventData(): void {

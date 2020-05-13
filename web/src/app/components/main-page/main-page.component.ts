@@ -25,6 +25,10 @@ export class MainPageComponent implements OnInit {
       "Plus",
       this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/Plus.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      "Help",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/helpOutline.svg")
+    );
   }
 
   ngOnInit() {
@@ -39,6 +43,10 @@ export class MainPageComponent implements OnInit {
 
   routeToSchedule(): void {
     this.router.navigate(['/schedule']);
+  }
+
+  requestHelp(): void {
+    console.log("help requested");
   }
 
   updateStatus(): void {

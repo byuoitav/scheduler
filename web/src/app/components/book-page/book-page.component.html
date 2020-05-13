@@ -7,7 +7,7 @@
   <span class="booking-title">Booking {{ status.roomName }} for {{day | date : "EEEE, MMM dd"}}</span>
 </mat-toolbar>
 
-<mat-grid-list cols="5" rowHeight="141px">
+<mat-grid-list cols="5" rowHeight="117.6px">
   <mat-grid-tile colspan="3" rowspan="3">
     <mat-card class="book-window-card">
       <mat-card-content class="event-label">Event Title</mat-card-content>
@@ -37,13 +37,23 @@
     <app-time></app-time>
   </mat-grid-tile>
   <mat-grid-tile colspan="2" rowspan="1">
-    <button mat-stroked-button class="main-button" (click)="saveEventData()">
-      <mat-icon svgIcon="SaveTray" class="button-icon"></mat-icon>
-      SAVE
-    </button>
-    <button mat-stroked-button class="main-button" (click)="routeToMain()">
-      <mat-icon svgIcon="Cancel" class="button-icon"></mat-icon>
-      CANCEL
-    </button>
+    
   </mat-grid-tile>
 </mat-grid-list>
+
+<mat-toolbar class="footer">
+  <mat-toolbar-row>
+    <span class="footer-spacer-left"></span>
+    <button mat-stroked-button class="footer-button" (click)="saveEventData()">
+      <mat-icon svgIcon="SaveTray" class="button-icon"></mat-icon>
+      <span>SAVE</span>
+    </button>
+    <button mat-stroked-button class="footer-button" (click)="routeToMain()">
+      <mat-icon svgIcon="Cancel" class="button-icon"></mat-icon>
+      <span>CANCEL</span>
+    </button>
+    <button mat-stroked-button class="footer-button" (click)="requestHelp()">
+      <mat-icon svgIcon="Help" class="help-icon"></mat-icon>
+      <span>HELP</span></button>
+  </mat-toolbar-row>
+</mat-toolbar>
