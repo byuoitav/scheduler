@@ -25,6 +25,10 @@ export class ScheduledEvent {
   endTime: Date;
 }
 
+export class HelpRequest {
+  roomId: string;
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -179,4 +183,20 @@ export class DataService {
 
     return this.http.post(url, body, httpHeaders);
   }
+
+  sendHelpRequest(deviceId: string): Observable<Object> {
+    const url =
+      this.url + ":" + this.port + "/help";
+    console.log("sending help request");
+    const httpHeaders = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    };
+
+    const body = new HelpRequest();
+    body.roomId = deviceId;
+
+    return this.http.post(url, body, httpHeaders);
+  };
 }

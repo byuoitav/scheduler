@@ -12,10 +12,15 @@ export class HelpDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<HelpDialogComponent>, public data: DataService) { }
 
   ngOnInit() {
+
   }
 
   public cancel() {
     this.dialogRef.close();
+  }
+
+  public requestHelp() {
+    console.log("help requested");
   }
 
   public isAfterHours(): boolean {

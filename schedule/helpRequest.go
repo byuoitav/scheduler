@@ -11,7 +11,11 @@ import (
 	"github.com/byuoitav/device-monitoring/localsystem"
 )
 
-func sendHelpRequest() error {
+type HelpReqeust struct {
+	DeviceID string
+}
+
+func SendHelpRequest(request HelpReqeust) error {
 	id := localsystem.MustSystemID()
 	deviceInfo := events.GenerateBasicDeviceInfo(id)
 	roomInfo := events.GenerateBasicRoomInfo(deviceInfo.RoomID)
@@ -20,17 +24,16 @@ func sendHelpRequest() error {
 		return err
 	}
 
-	var countEvent events.Event
-	countEvent.GeneratingSystem = id
-	countEvent.Timestamp = time.Now()
-	countEvent.EventTags = []string{events.DetailState}
-	countEvent.TargetDevice = deviceInfo
-	countEvent.AffectedRoom = roomInfo
-	countEvent.Key = "help-request"
-	countEvent.Value = "confirm"
-
 	if messenger != nil {
-		messenger.SendEvent(countEvent)
+		messenger.SendEvent(events.Event{
+			GeneratingSystem: id,
+			Timestamp:        time.Now(),
+			EventTags:        []string{events.DetailState},
+			TargetDevice:     deviceInfo,
+			AffectedRoom:     roomInfo,
+			Key:              "help-request",
+			Value:            "confirm",
+		})
 		return nil
 	}
 	return fmt.Errorf("messenger not set up")

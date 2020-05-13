@@ -48,12 +48,7 @@ export class MainPageComponent implements OnInit {
   }
 
   requestHelp(): void {
-    console.log("help requested");
-    const dialogRef = this.dialogRef.open(HelpDialogComponent, {
-      // width: '100vw',
-      // panelClass: 'custom-dialog-container',
-      data: event
-    });
+    const dialogRef = this.dialogRef.open(HelpDialogComponent, {});
   }
 
   updateStatus(): void {

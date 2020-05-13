@@ -51,12 +51,7 @@ export class SchedulePageComponent implements OnInit {
   }
 
   requestHelp(): void {
-    console.log("help requested");
-    const dialog = this.dialogRef.open(HelpDialogComponent, {
-      width: '400px',
-      panelClass: 'custom-dialog-container',
-      data: event
-    });
+    const dialog = this.dialogRef.open(HelpDialogComponent, {});
   }
 
 }
