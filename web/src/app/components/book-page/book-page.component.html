@@ -52,8 +52,11 @@
       <mat-icon svgIcon="Cancel" class="button-icon"></mat-icon>
       <span>CANCEL</span>
     </button>
-    <button mat-stroked-button class="footer-button" (click)="requestHelp()">
-      <mat-icon svgIcon="Help" class="help-icon"></mat-icon>
-      <span>HELP</span></button>
+    <div *ngIf="status.displayHelp">
+      <button mat-stroked-button class="footer-button" (click)="requestHelp()">
+        <mat-icon svgIcon="Help" class="help-icon"></mat-icon>
+        <span>HELP</span>
+      </button>
+    </div>
   </mat-toolbar-row>
 </mat-toolbar>

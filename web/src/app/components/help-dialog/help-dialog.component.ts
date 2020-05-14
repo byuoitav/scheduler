@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { DataService } from 'src/app/services/data/data.service';
+import { ConfirmHelpDialog } from './confirm-help';
 
 @Component({
   selector: 'app-help-dialog',
@@ -9,18 +10,28 @@ import { DataService } from 'src/app/services/data/data.service';
 })
 export class HelpDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<HelpDialogComponent>, public data: DataService) { }
+  constructor(public mainRef: MatDialogRef<HelpDialogComponent>,
+    private data: DataService,
+    public confirmRef: MatDialog){}
 
   ngOnInit() {
 
   }
 
   public cancel() {
-    this.dialogRef.close();
+    this.mainRef.close();
   }
 
   public requestHelp() {
     console.log("help requested");
+
+    //actually send the request
+
+    const dialogRef = this.confirmRef.open(ConfirmHelpDialog, {
+      width: "70vw",
+      disableClose: true
+    });
+    this.cancel();
   }
 
   public isAfterHours(): boolean {

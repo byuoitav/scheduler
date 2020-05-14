@@ -27,8 +27,11 @@
 <mat-toolbar class="footer">
   <mat-toolbar-row>
     <span class="footer-spacer-left"></span>
-    <button mat-stroked-button class="footer-button" (click)="requestHelp()">
-      <mat-icon svgIcon="Help" class="help-icon"></mat-icon>
-      <span>HELP</span></button>
+    <div *ngIf="status.displayHelp">
+      <button mat-stroked-button class="footer-button" (click)="requestHelp()">
+        <mat-icon svgIcon="Help" class="help-icon"></mat-icon>
+        <span>HELP</span>
+      </button>
+    </div>
   </mat-toolbar-row>
 </mat-toolbar>

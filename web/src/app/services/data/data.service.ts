@@ -11,6 +11,7 @@ export class RoomStatus {
   emptySchedule: boolean;
   displayBookNow: boolean;
   displayTitle: boolean;
+  displayHelp: boolean;
 }
 
 export class OutputEvent {
@@ -56,7 +57,8 @@ export class DataService {
       unoccupied: true,
       emptySchedule: false,
       displayBookNow: true,
-      displayTitle: true
+      displayTitle: true,
+      displayHelp: true
     };
 
     this.getConfig();
@@ -128,6 +130,7 @@ export class DataService {
         this.status.deviceName = this.config["_id"];
         this.status.displayBookNow = this.config["canCreateEvents"];
         this.status.displayTitle = this.config["displayMeetingTitle"];
+        this.status.displayHelp = this.config["canRequestHelp"];
       },
       err => {
         setTimeout(() => {

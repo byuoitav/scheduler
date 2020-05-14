@@ -33,6 +33,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
 import { HelpDialogComponent } from './components/help-dialog/help-dialog.component';
+import { ConfirmHelpDialog } from './components/help-dialog/confirm-help';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { HelpDialogComponent } from './components/help-dialog/help-dialog.compon
     ScheduleListComponent,
     KeyboardSheetComponent,
     BookDialogComponent,
-    HelpDialogComponent
+    HelpDialogComponent,
+    ConfirmHelpDialog
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,7 @@ import { HelpDialogComponent } from './components/help-dialog/help-dialog.compon
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [KeyboardSheetComponent, BookDialogComponent, HelpDialogComponent],
+  entryComponents: [KeyboardSheetComponent, BookDialogComponent, HelpDialogComponent, ConfirmHelpDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
