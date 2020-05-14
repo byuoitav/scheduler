@@ -8,7 +8,7 @@ import { Component, Inject } from "@angular/core";
   
           <div mat-dialog-content class="text">
               <p *ngIf="data">Your help request has been recieved; A member of our support staff is on their way.</p>
-              <p *ngIf="!data">Your help request failed to send; Please try again</p>
+              <p *ngIf="!data">Your help request failed to send; Please try again or call AV Support at 801-422-7671</p>
           </div>
   
           <div mat-dialog-actions class="items secondary-theme">
@@ -22,7 +22,7 @@ import { Component, Inject } from "@angular/core";
       `
         .text {
           text-align: center;
-          font-family: Roboto, "Helvetica Neue", sans-serif;
+          font-family: var(--main-font);
         }
   
         .items {
