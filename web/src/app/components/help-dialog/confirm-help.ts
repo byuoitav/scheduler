@@ -1,5 +1,5 @@
-import { MatDialogRef } from "@angular/material";
-import { Component } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Component, Inject } from "@angular/core";
 
 @Component({
     selector: "confirm-help",
@@ -7,7 +7,8 @@ import { Component } from "@angular/core";
           <h1 mat-dialog-title class="text">Confirm</h1>
   
           <div mat-dialog-content class="text">
-              <p>Your help request has been recieved; A member of our support staff is on their way.</p>
+              <p *ngIf="data">Your help request has been recieved; A member of our support staff is on their way.</p>
+              <p *ngIf="!data">Your help request failed to send; Please try again</p>
           </div>
   
           <div mat-dialog-actions class="items secondary-theme">
@@ -35,7 +36,8 @@ import { Component } from "@angular/core";
   })
 export class ConfirmHelpDialog {
     constructor(
-        public dialogRef: MatDialogRef<ConfirmHelpDialog>
+        public dialogRef: MatDialogRef<ConfirmHelpDialog>,
+        @Inject(MAT_DIALOG_DATA) public data: boolean
     ) {}
     
     public cancel() {

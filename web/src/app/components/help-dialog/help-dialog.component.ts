@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material';
-import { DataService } from 'src/app/services/data/data.service';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { DataService, HelpRequest } from 'src/app/services/data/data.service';
 import { ConfirmHelpDialog } from './confirm-help';
 
 @Component({
@@ -11,8 +11,9 @@ import { ConfirmHelpDialog } from './confirm-help';
 export class HelpDialogComponent implements OnInit {
 
   constructor(public mainRef: MatDialogRef<HelpDialogComponent>,
-    private data: DataService,
-    public confirmRef: MatDialog){}
+    private dataService: DataService,
+    public confirmRef: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: string){}
 
   ngOnInit() {
 
@@ -26,10 +27,19 @@ export class HelpDialogComponent implements OnInit {
     console.log("help requested");
 
     //actually send the request
-
+    let requestStatus = true;
+    this.dataService.sendHelpRequest(this.data).subscribe(
+      data => {
+        requestStatus = true;
+      },
+      err => {
+        requestStatus = false;
+      }
+    );
     const dialogRef = this.confirmRef.open(ConfirmHelpDialog, {
       width: "70vw",
-      disableClose: true
+      disableClose: true,
+      data: requestStatus
     });
     this.cancel();
   }

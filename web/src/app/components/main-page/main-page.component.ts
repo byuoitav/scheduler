@@ -48,7 +48,9 @@ export class MainPageComponent implements OnInit {
   }
 
   requestHelp(): void {
-    const dialogRef = this.dialogRef.open(HelpDialogComponent, {});
+    const dialogRef = this.dialogRef.open(HelpDialogComponent, {
+      data: this.dataService.status.deviceName
+    });
   }
 
   updateStatus(): void {
