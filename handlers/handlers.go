@@ -84,6 +84,20 @@ func GetStaticElements(c echo.Context) error {
 	return c.Stream(http.StatusOK, fileType, file)
 }
 
+func SendHelpRequest(c echo.Context) error {
+
+	var request schedule.HelpReqeust
+	if err := c.Bind(&request); err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+
+	if err := schedule.SendHelpRequest(request); err != nil {
+		return c.String(http.StatusInternalServerError, fmt.Sprintf("failed to send help request for device: %s", request.DeviceID))
+	}
+
+	return c.JSON(http.StatusOK, fmt.Sprintf("Help request sent for device: %s", request.DeviceID))
+}
+
 func connectionCheck() {
 	id := localsystem.MustSystemID()
 	deviceInfo := events.GenerateBasicDeviceInfo(id)

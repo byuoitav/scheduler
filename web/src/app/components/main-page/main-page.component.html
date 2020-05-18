@@ -26,12 +26,18 @@
     <span class="footer-spacer-left"></span>
     <button mat-stroked-button class="footer-button" (click)="routeToSchedule()">
       <mat-icon svgIcon="Calendar" class="button-icon"></mat-icon>
-      VIEW SCHEDULE
+      <span>VIEW SCHEDULE</span>
     </button>
     <div *ngIf="status.displayBookNow">
       <button mat-stroked-button class="footer-button" (click)="routeToBook()">
         <mat-icon svgIcon="Plus" class="button-icon"></mat-icon>
-        BOOK NOW
+        <span>BOOK NOW</span>
+      </button>
+    </div>
+    <div *ngIf="status.displayHelp">
+      <button mat-stroked-button class="footer-button" (click)="requestHelp()">
+        <mat-icon svgIcon="Help" class="help-icon"></mat-icon>
+        <span>HELP</span>
       </button>
     </div>
   </mat-toolbar-row>

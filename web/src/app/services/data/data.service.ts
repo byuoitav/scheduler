@@ -11,6 +11,7 @@ export class RoomStatus {
   emptySchedule: boolean;
   displayBookNow: boolean;
   displayTitle: boolean;
+  displayHelp: boolean;
 }
 
 export class OutputEvent {
@@ -23,6 +24,10 @@ export class ScheduledEvent {
   title: string;
   startTime: Date;
   endTime: Date;
+}
+
+export class HelpRequest {
+  roomId: string;
 }
 
 @Injectable({
@@ -52,7 +57,8 @@ export class DataService {
       unoccupied: true,
       emptySchedule: false,
       displayBookNow: true,
-      displayTitle: true
+      displayTitle: true,
+      displayHelp: true
     };
 
     this.getConfig();
@@ -70,7 +76,7 @@ export class DataService {
       this.config.hasOwnProperty("image-url") &&
       this.config["image-url"] != ""
     ) {
-      return this.config["image-url"];
+      return this.url + ":" + this.port + this.config["image-url"];
     }
 
     return "assets/YMountain.png";
@@ -82,7 +88,7 @@ export class DataService {
       this.config.hasOwnProperty("style-url") &&
       this.config["style-url"] != ""
     ) {
-      return this.config["style-url"];
+      return this.url + ":" + this.port + this.config["style-url"];
     }
     return "assets/custom.css";
   }
@@ -124,6 +130,7 @@ export class DataService {
         this.status.deviceName = this.config["_id"];
         this.status.displayBookNow = this.config["canCreateEvents"];
         this.status.displayTitle = this.config["displayMeetingTitle"];
+        this.status.displayHelp = this.config["canRequestHelp"];
       },
       err => {
         setTimeout(() => {
@@ -179,4 +186,20 @@ export class DataService {
 
     return this.http.post(url, body, httpHeaders);
   }
+
+  sendHelpRequest(deviceId: string): Observable<Object> {
+    const url =
+      this.url + ":" + this.port + "/help";
+    console.log("sending help request");
+    const httpHeaders = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    };
+
+    const body = new HelpRequest();
+    body.roomId = deviceId;
+
+    return this.http.post(url, body, httpHeaders);
+  };
 }

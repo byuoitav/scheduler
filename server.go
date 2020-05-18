@@ -64,6 +64,9 @@ func main() {
 	// get static elements
 	e.GET("/static/:doc", handlers.GetStaticElements)
 
+	// send help request
+	e.POST("/help", handlers.SendHelpRequest)
+
 	// handle load balancer status check
 	e.GET("/status", func(c echo.Context) error {
 		return c.String(http.StatusOK, "healthy")
