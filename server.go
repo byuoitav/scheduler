@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/byuoitav/scheduler/handlers"
 	"github.com/byuoitav/scheduler/log"
@@ -91,6 +92,8 @@ func main() {
 		Root:   "web-dist",
 		Browse: true,
 	}))
+
+	go handlers.SendWebsocketCount(3 * time.Minute)
 
 	addr := fmt.Sprintf(":%d", port)
 	err := e.Start(addr)

@@ -1,16 +1,18 @@
 package handlers
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
+	"sync"
 	"time"
 
-	"github.com/byuoitav/central-event-system/hub/base"
-	"github.com/byuoitav/central-event-system/messenger"
 	"github.com/byuoitav/common/v2/events"
-	"github.com/byuoitav/device-monitoring/localsystem"
 	"github.com/byuoitav/scheduler/calendars"
 	"github.com/byuoitav/scheduler/log"
 	"github.com/byuoitav/scheduler/schedule"
@@ -18,7 +20,7 @@ import (
 	"go.uber.org/zap"
 )
 
-var start time.Time
+var lastRequest time.Time
 
 // GetConfig returns the config for this device, based on it's SYSTEM_ID
 func GetConfig(c echo.Context) error {
@@ -36,14 +38,12 @@ func GetConfig(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
-	start = time.Now()
-	go connectionCheck()
 
+	lastRequest = time.Now()
 	return c.JSON(http.StatusOK, config)
 }
 
 func GetEvents(c echo.Context) error {
-	start = time.Now()
 	roomID := c.Param("roomID")
 
 	log.P.Info("Getting events", zap.String("room", roomID))
@@ -53,6 +53,7 @@ func GetEvents(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, fmt.Sprintf("unable to get events in %q: %s", roomID, err))
 	}
 
+	lastRequest = time.Now()
 	return c.JSON(http.StatusOK, events)
 }
 
@@ -85,55 +86,103 @@ func GetStaticElements(c echo.Context) error {
 }
 
 func SendHelpRequest(c echo.Context) error {
-
-	var request schedule.HelpReqeust
+	var request schedule.HelpRequest
 	if err := c.Bind(&request); err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	if err := schedule.SendHelpRequest(request); err != nil {
-		return c.String(http.StatusInternalServerError, fmt.Sprintf("failed to send help request for device: %s", request.DeviceID))
+	id := os.Getenv("SYSTEM_ID")
+	deviceInfo := events.GenerateBasicDeviceInfo(id)
+	roomInfo := events.GenerateBasicRoomInfo(deviceInfo.RoomID)
+
+	event := events.Event{
+		GeneratingSystem: id,
+		Timestamp:        time.Now(),
+		EventTags:        []string{events.DetailState},
+		TargetDevice:     deviceInfo,
+		AffectedRoom:     roomInfo,
+		Key:              "help-request",
+		Value:            "confirm",
 	}
 
+	sendEvent(c.Request().Context(), event)
 	return c.JSON(http.StatusOK, fmt.Sprintf("Help request sent for device: %s", request.DeviceID))
 }
 
-func connectionCheck() {
-	id := localsystem.MustSystemID()
+func SendWebsocketCount(frequency time.Duration) {
+	id := os.Getenv("SYSTEM_ID")
 	deviceInfo := events.GenerateBasicDeviceInfo(id)
 	roomInfo := events.GenerateBasicRoomInfo(deviceInfo.RoomID)
-	messenger, err := messenger.BuildMessenger(os.Getenv("HUB_ADDRESS"), base.Messenger, 1000)
-	if err != nil {
-		log.P.Error("unable to build websocket count messenger: %s", zap.String("error", err.Error()))
-	}
-	for {
-		var countEvent events.Event
-		log.P.Debug("Time since start", zap.String("time", time.Since(start).String()))
-		if time.Since(start).Seconds() > 120 {
-			//time to worry
-			countEvent.GeneratingSystem = id
-			countEvent.Timestamp = time.Now()
-			countEvent.EventTags = []string{events.DetailState}
-			countEvent.TargetDevice = deviceInfo
-			countEvent.AffectedRoom = roomInfo
-			countEvent.Key = "websocket-count"
-			countEvent.Value = fmt.Sprintf("%d", 0)
+
+	ticker := time.NewTicker(frequency)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		event := events.Event{
+			GeneratingSystem: id,
+			Timestamp:        time.Now(),
+			EventTags:        []string{events.DetailState},
+			TargetDevice:     deviceInfo,
+			AffectedRoom:     roomInfo,
+			Key:              "websocket-count",
+		}
+
+		if time.Since(lastRequest).Seconds() >= 120 {
+			event.Value = strconv.Itoa(0)
 		} else {
-			countEvent.GeneratingSystem = id
-			countEvent.Timestamp = time.Now()
-			countEvent.EventTags = []string{events.DetailState}
-			countEvent.TargetDevice = deviceInfo
-			countEvent.AffectedRoom = roomInfo
-			countEvent.Key = "websocket-count"
-			countEvent.Value = fmt.Sprintf("%d", 1)
+			event.Value = strconv.Itoa(1)
 		}
 
-		if messenger != nil {
-			log.P.Debug("Sending websocket count of", zap.String("value", countEvent.Value))
-			messenger.SendEvent(countEvent)
-		}
+		sendEvent(context.Background(), event)
+	}
+}
 
-		time.Sleep(3 * time.Minute)
+func sendEvent(ctx context.Context, event events.Event) {
+	eventProcs := strings.Split(os.Getenv("EVENT_URLS"), ",")
+
+	body, err := json.Marshal(event)
+	if err != nil {
+		log.P.Warn("unable to marshal event", zap.Error(err))
+		return
 	}
 
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	wg := &sync.WaitGroup{}
+
+	for i := range eventProcs {
+		if len(eventProcs[i]) == 0 {
+			continue
+		}
+
+		wg.Add(1)
+
+		go func(url string) {
+			log.P.Info("Sending event", zap.String("url", url), zap.String("key", event.Key), zap.String("value", event.Value))
+			defer wg.Done()
+
+			req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(body))
+			if err != nil {
+				log.P.Warn("unable to create request", zap.Error(err), zap.String("url", url))
+				return
+			}
+
+			req.Header.Add("content-type", "application/json")
+
+			resp, err := http.DefaultClient.Do(req)
+			if err != nil {
+				log.P.Warn("unable to send request", zap.Error(err), zap.String("url", url))
+				return
+			}
+			defer resp.Body.Close()
+
+			if resp.StatusCode/100 != 2 {
+				log.P.Warn("non 200 response", zap.String("url", url), zap.Int("statusCode", resp.StatusCode))
+				return
+			}
+		}(eventProcs[i])
+	}
+
+	wg.Wait()
 }
