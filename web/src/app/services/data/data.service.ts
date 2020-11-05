@@ -161,10 +161,7 @@ export class DataService {
         console.log("Schedule updated");
       },
       err => {
-        setTimeout(() => {
-          console.error("failed to get schedule data", err);
-          this.getScheduleData();
-        }, 5000);
+		console.error("failed to get schedule data", err);
       }
     );
   };
