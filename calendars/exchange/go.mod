@@ -1,17 +1,16 @@
-module github.com/byuoitav/scheduler/calendars/exchange
+module server.go
 
-go 1.22.1
-
-toolchain go1.22.6
+go 1.18
 
 require (
-	github.com/byuoitav/exchange-calendar v0.0.6
+	github.com/byuoitav/exchange-calendar v0.0.7
 	github.com/byuoitav/scheduler v0.3.4
 	github.com/spf13/pflag v1.0.5
 )
 
 require (
 	github.com/byuoitav/common v0.0.0-20230217215806-8472d0ddbfb3 // indirect
+	github.com/byuoitav/scheduler/calendars/exchange v0.0.0-20241001215957-a36c5477b1f9 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/labstack/gommon v0.4.2 // indirect

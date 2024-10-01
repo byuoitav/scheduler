@@ -5,11 +5,13 @@ github.com/byuoitav/common v0.0.0-20191210190714-e9b411b3cc0d/go.mod h1:YTDTFEme
 github.com/byuoitav/common v0.0.0-20230217215806-8472d0ddbfb3 h1:7XPtuvGexBnr3SBnVxGtYBB/YsedWztzJem4XHBGzA4=
 github.com/byuoitav/common v0.0.0-20230217215806-8472d0ddbfb3/go.mod h1:YTDTFEmez7HU3oyCIWjU3RfQ/P6v24LEzH5YUebph7I=
 github.com/byuoitav/device-monitoring v0.0.0-20200310211254-94d1f85b41c2/go.mod h1:n9PY4PhVKyrO15/M9rPsHSQFo/62Zsanvp0ZT6D2fbg=
-github.com/byuoitav/exchange-calendar v0.0.6 h1:KSPoR6WM54RS8TNlg3qrOJPoaJKP/fCYDjr2Lg5O2M4=
-github.com/byuoitav/exchange-calendar v0.0.6/go.mod h1:5xy/8K9+UmMChiv1+5AXiK/ARVPfDAeUMrMrmv8TgQo=
+github.com/byuoitav/exchange-calendar v0.0.7 h1:/gyuMPDTGUwUZpo/yukZf3Gj+7Ap3KtONtMpIZen8oI=
+github.com/byuoitav/exchange-calendar v0.0.7/go.mod h1:5xy/8K9+UmMChiv1+5AXiK/ARVPfDAeUMrMrmv8TgQo=
 github.com/byuoitav/scheduler v0.2.1/go.mod h1:5iDIHeT5//PuWJcXaADsJCgvmxC89jEW+zmdX6mUOIg=
 github.com/byuoitav/scheduler v0.3.4 h1:F/DeKpMq8Z8GhcUlQcPuPzrWkVbV9+HFpB4R/CfKIVU=
 github.com/byuoitav/scheduler v0.3.4/go.mod h1:fwjXQvTbWj0mJ75vz2a+dS6lSqTdcQFgV2Zjd3TnUTY=
+github.com/byuoitav/scheduler/calendars/exchange v0.0.0-20241001215957-a36c5477b1f9 h1:yRUgI/piaEcVv4jXkAqDMDFyRg/flR5l+5lZGeCm4b0=
+github.com/byuoitav/scheduler/calendars/exchange v0.0.0-20241001215957-a36c5477b1f9/go.mod h1:IgygLLLr5Oe0GEmFP4/Te/+MrhYy5sAP3nojjaXAQzs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -50,7 +52,6 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
-github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasttemplate v1.0.1/go.mod h1:UQGH1tvbgY+Nz5t2n7tXsz52dQxojPUpymEIMZ47gx8=
@@ -58,7 +59,6 @@ github.com/valyala/fasttemplate v1.2.2 h1:lxLXG0uE3Qnshl9QyaK6XJxMXlQZELvChBOCmQ
 github.com/valyala/fasttemplate v1.2.2/go.mod h1:KHLXt3tVN2HBp8eijSv/kGJopbvo7S+qRAEEKiv+SiQ=
 go.uber.org/atomic v1.5.0/go.mod h1:sABNBOSYdrvTF6hTgEIbc7YasKWGhgEQZyfxyTvoXHQ=
 go.uber.org/goleak v1.3.0 h1:2K3zAYmnTNqV73imy9J1T3WC+gmCePx2hEGkimedGto=
-go.uber.org/goleak v1.3.0/go.mod h1:CoHD4mav9JJNrW/WLlf7HGZPjdw8EucARQHekz1X6bE=
 go.uber.org/multierr v1.3.0/go.mod h1:VgVr7evmIr6uPjLBxg28wmKNXyqE9akIJ5XnfpiKl+4=
 go.uber.org/multierr v1.11.0 h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=
 go.uber.org/multierr v1.11.0/go.mod h1:20+QtiLqy0Nd6FdQB9TLXag12DsQkrbs3htMFfDN80Y=
@@ -101,5 +101,4 @@ gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8
 gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
-gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
