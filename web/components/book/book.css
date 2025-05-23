@@ -1,0 +1,62 @@
+.back-button {
+    margin-left: 15px;
+}
+
+.book-title {
+    margin-left: 15px;
+}
+
+.create-event-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background-color: #0c0c0c79;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.create-event-container h1 {
+    margin: 0px;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.event-title-input {
+    width: 95%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #282928a6;
+    color: white;
+    font-size: 1.5em;
+    height: 175px;
+    margin-bottom: 15px;
+}
+
+.time-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 99%;
+}
+
+.event-start-time {
+    padding: 5px;
+    color: #a7a7a7;
+    font-size: 1.4em;
+    border-style: none;
+    border-radius: 5px;
+    width: 45%;
+    background-color: #282928a6;
+
+}
+
+.event-end-time {
+       padding: 5px;
+    color: #a7a7a7;
+    font-size: 1.4em;
+    border-style: none;
+    border-radius: 5px;
+    width: 45%;
+    background-color: #282928a6;
+}
