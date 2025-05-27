@@ -10,3 +10,11 @@ h1 {
     margin-top: 25px;
     color: #74be06;
 }
+
+.occupied {
+    color: red;
+}
+
+.unoccupied {
+    color: #74be06;
+}

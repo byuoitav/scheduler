@@ -1,12 +1,16 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const header = document.querySelector('header');
-    const componentContainer = document.querySelector('.component-container');
-    const footer = document.querySelector('footer');
+    // create the data service
+    window.dataService = await new DataService();
+    window.dataService.init().then(async () => {
+        console.log("Data service created");
+        console.log(window.dataService);
+        
+        currentComponent = 'home';
+        await loadComponent(currentComponent);
 
-    loadComponent('home');
-
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
+        updateUI();
+        setInterval(updateUI, 1000);
+    });
 });
 
 async function loadComponent(name) {
@@ -65,6 +69,11 @@ async function loadComponent(name) {
     document.body.appendChild(script);
 }
 
+function updateUI() {
+    updateDateTime();
+    updateHeaderColor();
+}
+
 function updateDateTime() {
     const timeElement = document.querySelector('.time-text');
     const dateElement = document.querySelector('.date-text');
@@ -83,5 +92,15 @@ function updateDateTime() {
     // Format date like "Thursday, May 22"
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
     dateElement.textContent = now.toLocaleDateString(undefined, options);
+}
+
+function updateHeaderColor() {
+    const header = document.querySelector('.header');
+    const unoccupied = window.dataService.getRoomStatus().unoccupied;
+    if (unoccupied) {
+        header.style.backgroundColor = "#74be06"; // Green
+    } else {
+        header.style.backgroundColor = "#F44336"; // Red
+    }
 }
 

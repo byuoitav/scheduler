@@ -11,7 +11,7 @@
  * @property {boolean} displayHelp
  */
 
-export class RoomStatus {
+class RoomStatus {
     /**
      * @param {RoomStatusParams} params
      */
@@ -54,7 +54,7 @@ export class RoomStatus {
  * @property {string} roomId
  */
 
-export class OutPutEvent {
+class OutPutEvent {
     /**
      * @param {EventParams} params
      */
@@ -73,7 +73,7 @@ export class OutPutEvent {
     getEndTime() { return this.endTime; }
 }
 
-export class ScheduledEvent {
+class ScheduledEvent {
     /**
      * @param {EventParams} params
      */
@@ -92,7 +92,7 @@ export class ScheduledEvent {
     getEndTime() { return this.endTime; }
 }
 
-export class HelpRequest {
+class HelpRequest {
     /**
      * @param {HelpRequestParams} params
      */
@@ -105,33 +105,35 @@ export class HelpRequest {
 }
 
 
-export class DataService {
+class DataService {
     constructor() {
         const base = location.origin.split(":");
         this.url = base[0] + ":" + base[1];
-        console.log(this.url);
         this.port = base[2] ?? "80";
-        console.log(this.port);
 
         this.status = new RoomStatus({
             roomName: "",
             deviceName: "",
-            unoccupied: true,
+            unoccupied: false,
             emptySchedule: false,
-            displayBookNow: true,
-            displayTitle: true,
-            displayHelp: true
+            displayBookNow: false,
+            displayTitle: false,
+            displayHelp: false
         });
 
         this.currentSchedule = [];
         this.config = {};
-
-        this.getConfig().then(() => {
-            this.getScheduleData();
-            setInterval(() => this.getScheduleData(), 30000);
-            this.getCurrentEvent();
-        });
     }
+
+    async init() {
+        await this.getConfig();
+        await this.getScheduleData();
+        this.getCurrentEvent();
+
+        // refresh periodically
+        setInterval(() => this.getScheduleData(), 1000);
+    }
+
 
     getBackground() {
         if (
@@ -170,6 +172,7 @@ export class DataService {
                     return event;
                 }
             }
+        } else {
         }
 
         this.status.unoccupied = true;
@@ -196,32 +199,34 @@ export class DataService {
             });
     }
 
-    getScheduleData() {
+    async getScheduleData() {
         const url = `http://localhost:8000/${this.status.deviceName}/events`;
-        console.log("Getting schedule data from:", url);
+        // console.log("Getting schedule data from:", url);
 
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                if (!data || data.length === 0) {
-                    this.status.setEmptySchedule(true);
-                } else {
-                    this.status.setEmptySchedule(false);
-                    this.currentSchedule = data.map(
-                        (e) =>
-                            new ScheduledEvent({
-                                title: e.title,
-                                startTime: new Date(e.startTime).toISOString(),
-                                endTime: new Date(e.endTime).toISOString()
-                            })
-                    );
-                }
-                console.log("Schedule updated");
-            })
-            .catch((err) => {
-                console.error("failed to get schedule data", err);
-            });
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (!data || data.length === 0) {
+                this.status.setEmptySchedule(true);
+            } else {
+                this.status.setEmptySchedule(false);
+                this.currentSchedule = data.map(
+                    (e) =>
+                        new ScheduledEvent({
+                            title: e.title,
+                            startTime: new Date(e.startTime).toISOString(),
+                            endTime: new Date(e.endTime).toISOString()
+                        })
+                );
+            }
+
+            // console.log("Schedule updated");
+        } catch (err) {
+            console.error("failed to get schedule data", err);
+        }
     }
+
 
     /**
      * @param {ScheduledEvent} event

@@ -1,8 +1,12 @@
 window.components = window.components || {};
 
 window.components.home = {
+    intervalId: null,
+
     loadPage: function () {
         this.addNavButtons();
+        this.setRoomNameAndAvailability();
+        this.intervalId = setInterval(() => this.setRoomNameAndAvailability(), 1000);
     },
 
     cleanup: function () {
@@ -12,6 +16,12 @@ window.components.home = {
         buttons.forEach(button => {
             button.remove();
         });
+
+        // Clear the interval
+        if (this.intervalId !== null) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
     },
 
     addNavButtons: function () {
@@ -26,7 +36,7 @@ window.components.home = {
             helpButton.appendChild(helpImg);
             helpButton.appendChild(document.createTextNode("Help"));
             footer.appendChild(helpButton);
-           
+
         }
 
         if (true) {
@@ -57,6 +67,25 @@ window.components.home = {
                 console.log("Schedule button clicked");
                 loadComponent('schedule');
             });
+        }
+    },
+
+    setRoomNameAndAvailability: function () {
+        const roomName = document.querySelector('.room-name');
+        const roomStatus = document.querySelector('.available-text');
+        const unoccupied = window.dataService.getRoomStatus().unoccupied;
+        const currentEvent = window.dataService.getCurrentEvent();
+
+        if (!unoccupied) {
+            roomName.innerText = currentEvent.title;
+            roomStatus.innerText = "IN USE";
+            roomStatus.classList.add('occupied');
+            roomStatus.classList.remove('unoccupied');
+        } else {
+            roomName.innerText = window.dataService.getRoomStatus().roomName;
+            roomStatus.innerText = "AVAILABLE";
+            roomStatus.classList.add('unoccupied');
+            roomStatus.classList.remove('occupied');
         }
     }
 }
