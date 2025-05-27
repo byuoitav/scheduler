@@ -6,6 +6,7 @@ window.components.schedule = {
         this.addBackArrow();
         this.addScheduleTitle();
         this.addNavButtons();
+        this.addEvents();
     },
 
     cleanup: function () {
@@ -25,7 +26,7 @@ window.components.schedule = {
         buttons.forEach(button => {
             button.remove();
         });
-        
+
     },
 
     addBackArrow: function () {
@@ -63,7 +64,100 @@ window.components.schedule = {
             helpButton.appendChild(helpImg);
             helpButton.appendChild(document.createTextNode("Help"));
             footer.appendChild(helpButton);
-           
+
         }
+    },
+
+
+
+    addEvents: function () {
+        const eventList = document.querySelector('.schedule-list');
+        if (!window.dataService || !window.dataService.getSchedule()) {
+            console.warn("No schedule data available");
+            return;
+        }
+
+        var schedule = window.dataService.getSchedule();
+        schedule = this.sortEvents(schedule);
+
+        if (!schedule || schedule.length === 0) {
+            console.warn("Schedule is empty");
+            const emptyMessage = document.createElement('p');
+            emptyMessage.textContent = "No events scheduled.";
+            eventList.appendChild(emptyMessage);
+            return;
+        }
+
+        schedule.forEach(event => {
+            // console.log(event);
+            const eventItem = document.createElement('div');
+            eventItem.classList.add('schedule-item');
+
+            const scheduleItemHeader = document.createElement('div');
+            scheduleItemHeader.classList.add('schedule-item-header');
+
+            // title of meeting
+            const name = document.createElement('h2');
+            name.classList.add('schedule-item-title');
+            name.textContent = event.title;
+            scheduleItemHeader.appendChild(name);
+
+            const scheduleItemContent = document.createElement('div');
+            scheduleItemContent.classList.add('schedule-item-content');
+
+            // meeting length in hours and minutes
+            scheduleItemLength = document.createElement('p');
+            scheduleItemLength.classList.add('schedule-item-length');
+            const startTime = new Date(event.startTime);
+            const endTime = new Date(event.endTime);
+            const hours = this.calculateHours(event.startTime, event.endTime);
+            const minutes = this.calculateMinutes(event.startTime, event.endTime);
+            scheduleItemLength.textContent = `${hours} Hours ${minutes} minutes`;
+            scheduleItemContent.appendChild(scheduleItemLength);
+
+            // start time and end time (11:42 AM - 12:14 PM)
+            const timeElement = document.createElement('p');
+            timeElement.classList.add('schedule-item-times');
+            const startTimeFormatted = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const endTimeFormatted = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            timeElement.textContent = `${startTimeFormatted} - ${endTimeFormatted}`;
+            scheduleItemContent.appendChild(timeElement);
+
+            eventItem.appendChild(scheduleItemHeader);
+            eventItem.appendChild(scheduleItemContent);
+            eventList.appendChild(eventItem);
+
+            const title = document.createElement('h2');
+            title.textContent = event.title;
+
+
+        });
+
+    },
+
+    calculateHours: function (startTime, endTime) {
+        const start = new Date(startTime);
+        const end = new Date(endTime);
+        const diff = end - start; // difference in milliseconds
+        const hours = Math.floor(diff / (1000 * 60 * 60)); // convert to hours
+        return hours;
+    },
+
+    calculateMinutes: function (startTime, endTime) {
+        const start = new Date(startTime);
+        const end = new Date(endTime);
+        const diff = end - start; // difference in milliseconds
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); // convert to minutes
+        return minutes;
+    },
+
+    sortEvents: function (events) {
+        return events.sort((a, b) => {
+            const startA = new Date(a.startTime);
+            const startB = new Date(b.startTime);
+            return startA - startB; // Sort by start time
+        });
     }
+
+
 }

@@ -1,5 +1,8 @@
 .back-button {
     margin-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .schedule-title {
@@ -55,3 +58,6 @@
 .schedule-item-content p {
     margin: 5px;
 }
+
+
+
