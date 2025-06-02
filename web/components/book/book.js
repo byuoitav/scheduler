@@ -129,7 +129,12 @@ window.components.book = {
         const titleInput = document.querySelector('.event-title-input');
         const startSelect = document.querySelector('.event-start-time');
         const endSelect = document.querySelector('.event-end-time');
-        if (!titleInput || !startSelect || !endSelect) return;
+        const overlay = document.querySelector('.event-submission-container');
+        const confirmationText = document.querySelector('.confirmation-text');
+        const symbol = document.querySelector('.symbol');
+        const spinner = document.querySelector('.spinner');
+
+        if (!titleInput || !startSelect || !endSelect || !overlay || !confirmationText || !spinner) return;
 
         const title = titleInput.value.trim();
         const startTime = startSelect.value;
@@ -148,19 +153,46 @@ window.components.book = {
             return;
         }
 
+        // Reset and show popup
+        overlay.style.display = 'flex';
+        confirmationText.textContent = '';
+        spinner.style.display = 'block';
+
         const event = {
             title,
             startTime: this.toIsoWithOffset(startDate),
             endTime: this.toIsoWithOffset(endDate)
         };
 
-        window.dataService.submitNewEvent(event);
+        window.dataService.submitNewEvent(event)
+            .then(() => {
+                symbol.src = 'assets/check.png';
+                symbol.width = 60;
+                symbol.height = 60;
+                confirmationText.textContent = 'Event Submitted Successfully.';
+            })
+            .catch(() => {
+                symbol.src = 'assets/x.png';
+                symbol.width = 60;
+                symbol.height = 60;
+                confirmationText.textContent = 'Failed to Submit Event.';
+            })
+            .finally(() => {
+                spinner.style.display = 'none';
+
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    if (confirmationText.textContent === 'Event Submitted Successfully.') {
+                        loadComponent('home');
+                    }
+                }, 2000);
+            });
+
+        // Clear form immediately
         titleInput.value = '';
         startSelect.selectedIndex = 0;
         endSelect.selectedIndex = 0;
-        loadComponent('home');
     },
-
     // --- Helpers ---
     createButtonWithImg(className, imgSrc, imgW, imgH) {
         const btn = document.createElement('div');
