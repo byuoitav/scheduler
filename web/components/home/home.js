@@ -73,17 +73,26 @@ window.components.home = {
     setRoomNameAndAvailability: function () {
         const roomName = document.querySelector('.room-name');
         const roomStatus = document.querySelector('.available-text');
+        const meetingName = document.querySelector('.meeting-name');
         const unoccupied = window.dataService.getRoomStatus().unoccupied;
         const currentEvent = window.dataService.getCurrentEvent();
+        const showMeetingName = window.dataService.status.displayTitle;
 
+        // if occupied
         if (!unoccupied) {
-            roomName.innerText = currentEvent.title;
             roomStatus.innerText = "IN USE";
             roomStatus.classList.add('occupied');
             roomStatus.classList.remove('unoccupied');
+            // Show the meeting name if configured to do so
+            if (showMeetingName && currentEvent && currentEvent.title) {
+                meetingName.innerText = currentEvent.title;
+            } else {
+                meetingName.innerText = "";
+            }
         } else {
             roomName.innerText = window.dataService.getRoomStatus().roomName;
             roomStatus.innerText = "AVAILABLE";
+            meetingName.innerText = "";
             roomStatus.classList.add('unoccupied');
             roomStatus.classList.remove('occupied');
         }

@@ -18,3 +18,11 @@ h1 {
 .unoccupied {
     color: #74be06;
 }
+
+.meeting-name {
+    font-size: 2.5em;
+    color: white;
+    margin: 0px;
+    margin-top: 25px;
+    margin-left: 3px;
+}
