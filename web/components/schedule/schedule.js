@@ -55,7 +55,7 @@ window.components.schedule = {
 
     addNavButtons: function () {
         const footer = document.querySelector('.footer');
-        if (true) {
+        if (window.dataService.status.displayHelp) {
             const helpButton = document.createElement('button');
             const helpImg = document.createElement('img');
             helpImg.src = "assets/help.svg";
@@ -158,6 +158,4 @@ window.components.schedule = {
             return startA - startB; // Sort by start time
         });
     }
-
-
 }

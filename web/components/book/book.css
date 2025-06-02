@@ -34,6 +34,7 @@
     font-size: 1.5em;
     height: 175px;
     margin-bottom: 15px;
+    resize: none;
 }
 
 .time-inputs {
@@ -62,4 +63,18 @@
     border-radius: 5px;
     width: 45%;
     background-color: #282928a6;
+}
+
+.simple-keyboard {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48vh !important;
+  background-color: #001832 !important;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
 }

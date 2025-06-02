@@ -237,8 +237,8 @@ class DataService {
 
         const body = new OutPutEvent({
             title: event.title,
-            startTime: new Date(event.startTime).toISOString(),
-            endTime: new Date(event.endTime).toISOString()
+            startTime: event.startTime,
+            endTime: event.endTime
         });
 
         return fetch(url, {

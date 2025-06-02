@@ -1,8 +1,13 @@
 <div class="create-event-container">
     <h1>Event Title</h1>
-    <input type="text" class="event-title-input" placeholder="Enter event title" />
+    <textarea type="text" class="event-title-input" placeholder="Enter event title" /></textarea>
     <div class="time-inputs">
-        <input type="text" class="event-start-time" placeholder="Start Time" />
-        <input type="text" class="event-end-time" placeholder="End Time" />
+        <select class="event-start-time" id="event-start-time">
+            <option value="">Select start time</option>
+        </select>
+
+        <select class="event-end-time" id="event-end-time">
+            <option value="">Select end time</option>
+        </select>
     </div>
 </div>

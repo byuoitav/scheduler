@@ -27,7 +27,7 @@ window.components.home = {
     addNavButtons: function () {
         console.log("Adding nav buttons");
         const footer = document.querySelector('.footer');
-        if (true) {
+        if (window.dataService.status.displayHelp) {
             const helpButton = document.createElement('button');
             const helpImg = document.createElement('img');
             helpImg.src = "assets/help.svg";
@@ -39,7 +39,7 @@ window.components.home = {
 
         }
 
-        if (true) {
+        if (window.dataService.status.displayBookNow) {
             const bookButton = document.createElement('button');
             const bookImg = document.createElement('img');
             bookImg.src = "assets/plus.svg";
