@@ -29,6 +29,9 @@ window.components.home = {
         const footer = document.querySelector('.footer');
         if (window.dataService.status.displayHelp) {
             const helpButton = document.createElement('button');
+            helpButton.onclick = () => {
+                showHelp();
+            };
             const helpImg = document.createElement('img');
             helpImg.src = "assets/help.svg";
             helpImg.width = 40;

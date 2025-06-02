@@ -134,29 +134,6 @@ class DataService {
         setInterval(() => this.getScheduleData(), 1000);
     }
 
-
-    getBackground() {
-        if (
-            this.config &&
-            this.config.hasOwnProperty("image-url") &&
-            this.config["image-url"] !== ""
-        ) {
-            return this.url + ":" + this.port + this.config["image-url"];
-        }
-        return "assets/bg.png";
-    }
-
-    getStylesheet() {
-        if (
-            this.config &&
-            this.config.hasOwnProperty("style-url") &&
-            this.config["style-url"] !== ""
-        ) {
-            return this.url + ":" + this.port + this.config["style-url"];
-        }
-        return "assets/custom.css";
-    }
-
     getRoomStatus() { return this.status; }
     getSchedule() { return this.currentSchedule; }
 
@@ -182,7 +159,7 @@ class DataService {
     getConfig() {
         console.log("Getting config...");
 
-        return fetch("http://localhost/config")
+        return fetch(this.url + ":" + this.port + "/config")
             .then((res) => res.json())
             .then((data) => {
                 this.config = data;
@@ -200,7 +177,7 @@ class DataService {
     }
 
     async getScheduleData() {
-        const url = `http://localhost:8000/${this.status.deviceName}/events`;
+        const url = this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
         // console.log("Getting schedule data from:", url);
 
         try {
@@ -232,7 +209,7 @@ class DataService {
      * @param {ScheduledEvent} event
      */
     submitNewEvent(event) {
-        const url = `http://localhost:8000/${this.status.deviceName}/events`;
+        const url = this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
         console.log("Submitting new event to", url);
 
         const body = new OutPutEvent({
@@ -252,7 +229,7 @@ class DataService {
      * @param {string} deviceId
      */
     sendHelpRequest(deviceId) {
-        const url = `${this.url}:${this.port}/help`;
+        const url = this.url + ":" + this.port + "/help";
         console.log("Sending help request");
 
         const body = new HelpRequest({ roomId: deviceId });
@@ -261,6 +238,12 @@ class DataService {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
-        }).then((res) => res.json());
+        }).then((res) => {
+            if (!res.ok) {
+                throw new Error(`Server responded with status ${res.status}`);
+            }
+            return res.json();
+        });
     }
+
 }

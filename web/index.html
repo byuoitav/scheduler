@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <base href="/web/">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,200,300,400,500,600,700,800,900">
@@ -11,7 +12,7 @@
 
     <script src="./script.js"></script>
     <script src="./data.js"></script>
-    
+
     <!-- on-screen keyboard -->
     <link rel="stylesheet" href="./components/keyboard/keyboard.css">
     <script src="./components/keyboard/keyboard.js"></script>
@@ -24,7 +25,7 @@
     <div class="main">
 
         <div class="component-container">
-
+            <!-- Dynamically load components here -->
         </div>
 
         <div class="date-time">
@@ -49,6 +50,39 @@
         </button> -->
 
     </div>
+    <div class="help-container hidden">
+        <div class="help-modal">
+            <div class="get-help">
+                <h2>Help</h2>
+                <p>
+                    Please call AV Support at 801-422-7671 for help, or request help by pressing <i>Request Help</i> to
+                    send
+                    support
+                    staff to
+                    you
+                </p>
+
+                <div class="help-buttons">
+                    <button class="cancel-help-button" onclick="closeHelp()">
+                        Cancel
+                    </button>
+                    <button class="request-help-button" onclick="requestHelp()">
+                        Request Help
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="help-confirmation hidden">
+                <div class="help-message"></div>
+                <button class="close-confirmation-button" onclick="closeHelp()">
+                    Close
+                </button>
+            </div>
+
+
+        </div>
+
 
 </body>
 

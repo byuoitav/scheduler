@@ -1,18 +1,24 @@
 package main
 
 import (
+	"embed"
 	"errors"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/byuoitav/scheduler/handlers"
 	"github.com/byuoitav/scheduler/log"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
 	"go.uber.org/zap"
+)
+
+var (
+	//go:embed web/*
+	embeddedFiles embed.FS
 )
 
 func main() {
@@ -52,52 +58,74 @@ func main() {
 		log.P.Fatal("unable to set log level", zap.Error(err), zap.Int("got", logLevel))
 	}
 
-	// build echo server
-	e := echo.New()
+	// Setup the Frontend
+	subFS, err := fs.Sub(embeddedFiles, "web")
+	if err != nil {
+		log.P.Fatal("failed to create sub filesystem for web files", zap.Error(err))
+	}
+
+	// build gin server
+	r := gin.Default()
 
 	// get/create event
-	e.GET("/:roomID/events", handlers.GetEvents)
-	e.POST("/:roomID/events", handlers.CreateEvent)
+	r.GET("/:roomID/events", func(c *gin.Context) {
+		handlers.GetEventsGin(c)
+	})
+	r.POST("/:roomID/events", func(c *gin.Context) {
+		handlers.CreateEventGin(c)
+	})
 
 	// get config for the room
-	e.GET("/config", handlers.GetConfig)
+	r.GET("/config", func(c *gin.Context) {
+		handlers.GetConfigGin(c)
+	})
 
 	// get static elements
-	e.GET("/static/:doc", handlers.GetStaticElements)
+	r.GET("/static/:doc", func(c *gin.Context) {
+		handlers.GetStaticElementsGin(c)
+	})
 
 	// send help request
-	e.POST("/help", handlers.SendHelpRequest)
+	r.POST("/help", func(c *gin.Context) {
+		handlers.SendHelpRequestGin(c)
+	})
 
 	// handle load balancer status check
-	e.GET("/status", func(c echo.Context) error {
-		return c.String(http.StatusOK, "healthy")
+	r.GET("/status", func(c *gin.Context) {
+		c.String(http.StatusOK, "healthy")
 	})
 
 	// set the log level
-	e.GET("/log/:level", func(c echo.Context) error {
+	r.GET("/log/:level", func(c *gin.Context) {
 		level, err := strconv.Atoi(c.Param("level"))
 		if err != nil {
-			return c.String(http.StatusBadRequest, err.Error())
+			c.String(http.StatusBadRequest, err.Error())
+			return
 		}
-
 		if err := setLog(level); err != nil {
-			return c.String(http.StatusBadRequest, err.Error())
+			c.String(http.StatusBadRequest, err.Error())
+			return
 		}
-
-		return c.String(http.StatusOK, fmt.Sprintf("Set log level to %v", level))
+		c.String(http.StatusOK, fmt.Sprintf("Set log level to %v", level))
 	})
 
-	// serve ui
-	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:   "web-dist",
-		Browse: true,
-	}))
+	r.StaticFS("/web", http.FS(subFS))
+
+	r.NoRoute(func(c *gin.Context) {
+		if c.Request.URL.Path == "/" {
+			c.Redirect(http.StatusFound, "/web/")
+		} else if len(c.Request.URL.Path) >= 5 && c.Request.URL.Path[:5] == "/web/" {
+			c.FileFromFS("index.html", http.FS(subFS))
+		} else {
+			c.String(http.StatusNotFound, "Not found")
+		}
+	})
 
 	go handlers.SendWebsocketCount(3 * time.Minute)
 
 	addr := fmt.Sprintf(":%d", port)
-	err := e.Start(addr)
-	if err != nil && !errors.Is(err, http.ErrServerClosed) {
+	err = r.Run(addr)
+	if err != nil {
 		log.P.Fatal("failed to start server", zap.Error(err))
 	}
 }

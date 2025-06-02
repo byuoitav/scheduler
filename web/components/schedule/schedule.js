@@ -57,6 +57,9 @@ window.components.schedule = {
         const footer = document.querySelector('.footer');
         if (window.dataService.status.displayHelp) {
             const helpButton = document.createElement('button');
+            helpButton.onclick = () => {
+                showHelp();
+            };
             const helpImg = document.createElement('img');
             helpImg.src = "assets/help.svg";
             helpImg.width = 40;
@@ -68,8 +71,6 @@ window.components.schedule = {
         }
     },
 
-
-
     addEvents: function () {
         const eventList = document.querySelector('.schedule-list');
         if (!window.dataService || !window.dataService.getSchedule()) {
@@ -79,6 +80,24 @@ window.components.schedule = {
 
         var schedule = window.dataService.getSchedule();
         schedule = this.sortEvents(schedule);
+
+        // Get current local date (America/Denver)
+        const now = new Date();
+        const localYear = now.getFullYear();
+        const localMonth = now.getMonth();
+        const localDate = now.getDate();
+
+        // Only keep events that are on the same local day
+        schedule = schedule.filter(event => {
+            // Convert event start time to local (America/Denver)
+            const eventStart = new Date(event.startTime);
+            const eventLocal = new Date(eventStart.toLocaleString('en-US', { timeZone: 'America/Denver' }));
+            return (
+                eventLocal.getFullYear() === localYear &&
+                eventLocal.getMonth() === localMonth &&
+                eventLocal.getDate() === localDate
+            );
+        });
 
         if (!schedule || schedule.length === 0) {
             console.warn("Schedule is empty");
@@ -99,7 +118,11 @@ window.components.schedule = {
             // title of meeting
             const name = document.createElement('h2');
             name.classList.add('schedule-item-title');
-            name.textContent = event.title;
+            if (window.dataService.status.displayTitle) {
+                name.textContent = event.title;
+            } else {
+                name.textContent = "In Use";
+            }
             scheduleItemHeader.appendChild(name);
 
             const scheduleItemContent = document.createElement('div');

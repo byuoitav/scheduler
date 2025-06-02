@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.dataService.init().then(async () => {
         console.log("Data service created");
         console.log(window.dataService);
-        
+
         currentComponent = 'home';
         await loadComponent(currentComponent);
 
@@ -103,4 +103,59 @@ function updateHeaderColor() {
         header.style.backgroundColor = "#F44336"; // Red
     }
 }
+
+function showHelp() {
+    const helpContainer = document.querySelector('.help-container');
+    if (helpContainer) {
+        helpContainer.classList.remove('hidden');
+    } else {
+        console.warn("Help container not found");
+    }
+}
+
+function closeHelp() {
+    const helpContainer = document.querySelector('.help-container');
+    if (helpContainer) {
+        helpContainer.classList.add('hidden');
+    } else {
+        console.warn("Help container not found");
+    }
+
+    const getHelp = document.querySelector('.get-help');
+
+    getHelp.classList.remove('hidden');
+    const helpConfirmation = document.querySelector('.help-confirmation');
+    helpConfirmation.classList.add('hidden');
+}
+
+async function requestHelp() {
+    const roomId = window.dataService.config._id;
+    console.log("Requesting help for room ID:", roomId);
+
+    const getHelp = document.querySelector('.get-help');
+    const helpConfirmation = document.querySelector('.help-confirmation');
+    const helpMessage = document.querySelector('.help-message');
+    helpConfirmation.classList.remove('hidden');
+    closeConfirmationButton = document.querySelector('.close-confirmation-button');
+    closeConfirmationButton.classList.add('hidden');
+
+    getHelp.classList.add('hidden');
+
+    // Show spinner while waiting
+    helpMessage.innerHTML = `<span class="spinner"></span>Sending help request...`;
+
+    try {
+        const res = await window.dataService.sendHelpRequest(roomId);
+        console.log("Help request sent:", res);
+        closeConfirmationButton.classList.remove('hidden');
+        helpMessage.textContent = "Your help request has been received; a member of our support staff is on their way.";
+    } catch (err) {
+        closeConfirmationButton.classList.remove('hidden');
+        console.error("Help request failed:", err);
+        helpMessage.textContent = "Your help request failed to send; please try again or call AV Support at 801-422-7671.";
+
+    }
+}
+
+
 

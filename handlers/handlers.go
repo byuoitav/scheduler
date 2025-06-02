@@ -16,79 +16,87 @@ import (
 	"github.com/byuoitav/scheduler/calendars"
 	"github.com/byuoitav/scheduler/log"
 	"github.com/byuoitav/scheduler/schedule"
-	"github.com/labstack/echo"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 var lastRequest time.Time
 
-// GetConfig returns the config for this device, based on it's SYSTEM_ID
-func GetConfig(c echo.Context) error {
+// GetConfig returns the config for this device, based on its SYSTEM_ID
+func GetConfigGin(c *gin.Context) {
 	id := os.Getenv("SYSTEM_ID")
 	if len(id) == 0 {
-		return c.String(http.StatusInternalServerError, "SYSTEM_ID is not set")
+		c.String(http.StatusInternalServerError, "SYSTEM_ID is not set")
+		return
 	}
 
 	split := strings.Split(id, "-")
 	if len(split) != 3 {
-		return c.String(http.StatusInternalServerError, fmt.Sprintf("invalid SYSTEM_ID %q", id))
+		c.String(http.StatusInternalServerError, fmt.Sprintf("invalid SYSTEM_ID %q", id))
+		return
 	}
 
-	config, err := schedule.GetConfig(c.Request().Context(), split[0]+"-"+split[1])
+	config, err := schedule.GetConfig(c.Request.Context(), split[0]+"-"+split[1])
 	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
+		c.String(http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	lastRequest = time.Now()
-	return c.JSON(http.StatusOK, config)
+	c.JSON(http.StatusOK, config)
 }
 
-func GetEvents(c echo.Context) error {
+func GetEventsGin(c *gin.Context) {
 	roomID := c.Param("roomID")
 
 	log.P.Info("Getting events", zap.String("room", roomID))
 
-	events, err := schedule.GetEvents(c.Request().Context(), roomID)
+	eventsList, err := schedule.GetEvents(c.Request.Context(), roomID)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, fmt.Sprintf("unable to get events in %q: %s", roomID, err))
+		c.String(http.StatusInternalServerError, fmt.Sprintf("unable to get events in %q: %s", roomID, err))
+		return
 	}
 
 	lastRequest = time.Now()
-	return c.JSON(http.StatusOK, events)
+	c.JSON(http.StatusOK, eventsList)
 }
 
-func CreateEvent(c echo.Context) error {
+func CreateEventGin(c *gin.Context) {
 	roomID := c.Param("roomID")
 
 	var event calendars.Event
-	if err := c.Bind(&event); err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&event); err != nil {
+		c.String(http.StatusBadRequest, err.Error())
+		return
 	}
 
-	if err := schedule.CreateEvent(c.Request().Context(), roomID, event); err != nil {
-		return c.String(http.StatusInternalServerError, fmt.Sprintf("unable to create event %q in %q: %s", event.Title, roomID, err))
+	if err := schedule.CreateEvent(c.Request.Context(), roomID, event); err != nil {
+		c.String(http.StatusInternalServerError, fmt.Sprintf("unable to create event %q in %q: %s", event.Title, roomID, err))
+		return
 	}
 
-	return c.JSON(http.StatusOK, fmt.Sprintf("Successfully created %q in %q", event.Title, roomID))
+	c.JSON(http.StatusOK, fmt.Sprintf("Successfully created %q in %q", event.Title, roomID))
 }
 
-func GetStaticElements(c echo.Context) error {
+func GetStaticElementsGin(c *gin.Context) {
 	docName := c.Param("doc")
 
-	file, fileType, err := schedule.GetStatic(c.Request().Context(), docName)
+	file, fileType, err := schedule.GetStatic(c.Request.Context(), docName)
 	if err != nil {
 		log.P.Error("Unable to get static element", zap.Error(err))
-		return c.String(http.StatusInternalServerError, fmt.Sprintf("unable to get static element"))
+		c.String(http.StatusInternalServerError, "unable to get static element")
+		return
 	}
 	defer file.Close()
 
-	return c.Stream(http.StatusOK, fileType, file)
+	c.DataFromReader(http.StatusOK, -1, fileType, file, nil)
 }
 
-func SendHelpRequest(c echo.Context) error {
+func SendHelpRequestGin(c *gin.Context) {
 	var request schedule.HelpRequest
-	if err := c.Bind(&request); err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.String(http.StatusBadRequest, err.Error())
+		return
 	}
 
 	id := os.Getenv("SYSTEM_ID")
@@ -105,8 +113,8 @@ func SendHelpRequest(c echo.Context) error {
 		Value:            "confirm",
 	}
 
-	sendEvent(c.Request().Context(), event)
-	return c.JSON(http.StatusOK, fmt.Sprintf("Help request sent for device: %s", request.DeviceID))
+	sendEvent(c.Request.Context(), event)
+	c.JSON(http.StatusOK, fmt.Sprintf("Help request sent for device: %s", request.DeviceID))
 }
 
 func SendWebsocketCount(frequency time.Duration) {

@@ -78,3 +78,8 @@
   width: 100%;
   overflow: hidden;
 }
+
+select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
