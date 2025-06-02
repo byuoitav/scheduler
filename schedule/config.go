@@ -39,7 +39,7 @@ func GetConfig(ctx context.Context, roomID string) (Config, error) {
 	var config Config
 
 	url := fmt.Sprintf("%s/%s/%s", os.Getenv("DB_ADDRESS"), database, roomID)
-	log.P.Info("Getting scheduler config", zap.String("room", roomID), zap.String("url", url))
+	log.P.Debug("Getting scheduler config", zap.String("room", roomID), zap.String("url", url))
 
 	// build request
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)

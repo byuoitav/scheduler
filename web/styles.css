@@ -5,7 +5,7 @@ html {
     font-family: 'Roboto', sans-serif;
 }
 
-body  {
+body {
     width: 100%;
     height: 100%;
     padding: 0px;
@@ -107,9 +107,12 @@ body  {
 }
 
 .footer button:active {
-    background-color: #0e0f0ea6; /* slightly darker */
-    transform: translateY(2px);  /* mimic button press */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* subtle inset shadow */
+    background-color: #0e0f0ea6;
+    /* slightly darker */
+    transform: translateY(2px);
+    /* mimic button press */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* subtle inset shadow */
     transition: transform 0.05s, background-color 0.1s;
 }
 
@@ -119,14 +122,16 @@ body  {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* semi-transparent dark */
+    background: rgba(0, 0, 0, 0.5);
+    /* semi-transparent dark */
     z-index: 1000;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    pointer-events: auto; /* ensure it can block clicks */
+    pointer-events: auto;
+    /* ensure it can block clicks */
 }
 
 
@@ -137,8 +142,9 @@ body  {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
-    z-index: 1000; /* ensure it overlays everything */
+
+    z-index: 1000;
+    /* ensure it overlays everything */
     background-color: #424242;
     padding: 2rem;
     border-radius: 0.5rem;
@@ -161,7 +167,7 @@ body  {
 
 .help-modal button {
     background-color: #74be06;
-    color: white ;
+    color: white;
     border: none;
     padding: 10px 20px;
     font-size: 1.2em;
@@ -176,9 +182,12 @@ body  {
 }
 
 .help-modal button:active {
-    background-color: #0e0f0ea6; /* slightly darker */
-    transform: translateY(2px);  /* mimic button press */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* subtle inset shadow */
+    background-color: #0e0f0ea6;
+    /* slightly darker */
+    transform: translateY(2px);
+    /* mimic button press */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* subtle inset shadow */
     transition: transform 0.05s, background-color 0.1s;
 
 }
@@ -192,16 +201,18 @@ body  {
     background-color: #0091ea !important;
 }
 
-.get-help  {
+.get-help {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .help-confirmation {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .hidden {
     display: none;
 }
@@ -224,6 +235,17 @@ body  {
     margin-right: 0.5em;
     vertical-align: middle;
 }
+
+#cosmo-rocket {
+  position: fixed;
+  width: 100px;
+  height: auto;
+  pointer-events: none;
+  z-index: 9999;
+  left: 0;
+  bottom: 0;
+}
+
 
 @keyframes spin {
     to {

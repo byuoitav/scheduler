@@ -23,7 +23,7 @@ func GetEvents(ctx context.Context, roomID string) ([]calendars.Event, error) {
 		return events, fmt.Errorf("unable to get schedule config: %w", err)
 	}
 
-	log.P.Info("Getting events", zap.String("room", roomID), zap.String("url", config.CalendarURL))
+	log.P.Debug("Getting events", zap.String("room", roomID), zap.String("url", config.CalendarURL))
 
 	// build request
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, config.CalendarURL, nil)

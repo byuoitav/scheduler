@@ -49,7 +49,7 @@ func GetConfigGin(c *gin.Context) {
 func GetEventsGin(c *gin.Context) {
 	roomID := c.Param("roomID")
 
-	log.P.Info("Getting events", zap.String("room", roomID))
+	log.P.Debug("Getting events", zap.String("room", roomID))
 
 	eventsList, err := schedule.GetEvents(c.Request.Context(), roomID)
 	if err != nil {

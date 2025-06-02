@@ -65,38 +65,45 @@ func main() {
 	}
 
 	// build gin server
-	r := gin.Default()
+	r := gin.New()
 
 	// get/create event
 	r.GET("/:roomID/events", func(c *gin.Context) {
+		log.P.Debug("GET /:roomID/events endpoint hit", zap.String("roomID", c.Param("roomID")))
 		handlers.GetEventsGin(c)
 	})
 	r.POST("/:roomID/events", func(c *gin.Context) {
+		log.P.Info("POST /:roomID/events endpoint hit", zap.String("roomID", c.Param("roomID")))
 		handlers.CreateEventGin(c)
 	})
 
 	// get config for the room
 	r.GET("/config", func(c *gin.Context) {
+		log.P.Info("GET /config endpoint hit")
 		handlers.GetConfigGin(c)
 	})
 
 	// get static elements
 	r.GET("/static/:doc", func(c *gin.Context) {
+		log.P.Info("GET /static/:doc endpoint hit", zap.String("doc", c.Param("doc")))
 		handlers.GetStaticElementsGin(c)
 	})
 
 	// send help request
 	r.POST("/help", func(c *gin.Context) {
+		log.P.Info("POST /help endpoint hit")
 		handlers.SendHelpRequestGin(c)
 	})
 
 	// handle load balancer status check
 	r.GET("/status", func(c *gin.Context) {
+		log.P.Info("GET /status endpoint hit")
 		c.String(http.StatusOK, "healthy")
 	})
 
 	// set the log level
 	r.GET("/log/:level", func(c *gin.Context) {
+		log.P.Info("GET /log/:level endpoint hit", zap.String("level", c.Param("level")))
 		level, err := strconv.Atoi(c.Param("level"))
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())

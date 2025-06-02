@@ -104,6 +104,54 @@ function updateHeaderColor() {
     }
 }
 
+function cosmoSlide() {
+    if (document.getElementById("cosmo-rocket")) return;
+
+    const img = document.createElement("img");
+    img.src = "assets/zcosmoRocket.png";
+    img.id = "cosmo-rocket";
+    document.body.appendChild(img);
+
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    const amplitude = 50;        
+    const frequency = 0.03;     
+    const speed = 2.5;           
+    const scaleGrowth = 0.004;
+
+    let posX = 0;
+    let posY = screenHeight - 100;
+    let frame = 0;
+
+    function animate() {
+        
+        const offsetX = Math.sin(posY * frequency) * amplitude;
+        const scale = 1 + (screenHeight - posY) * scaleGrowth;
+
+        img.style.left = `${posX + offsetX}px`;
+        img.style.top = `${posY}px`;
+        img.style.transform = `scale(${scale})`;
+
+        posX += 4.5;   
+        posY -= speed; 
+
+        if (posY < -150 || posX > screenWidth + 150) {
+            cancelAnimationFrame(frame);
+            img.remove();
+        } else {
+            frame = requestAnimationFrame(animate);
+        }
+    }
+
+    img.style.top = `${posY}px`;
+    img.style.left = `${posX}px`;
+    animate();
+}
+
+
+
+
 function showHelp() {
     const helpContainer = document.querySelector('.help-container');
     if (helpContainer) {
