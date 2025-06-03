@@ -71,3 +71,33 @@ func GetConfig(ctx context.Context, roomID string) (Config, error) {
 
 	return config, nil
 }
+
+// GetBackgroundImage retrieves the background image for a given room ID.
+func GetBackgroundImage(ctx context.Context, roomID string) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/%s/bg.png", os.Getenv("DB_ADDRESS"), database, roomID)
+	log.P.Debug("Getting background image", zap.String("room", roomID), zap.String("url", url))
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.SetBasicAuth(os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, fmt.Errorf("background image not found for room %s", roomID)
+	}
+
+	if resp.StatusCode/100 != 2 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("failed to fetch bg.png: %s (status: %d)", body, resp.StatusCode)
+	}
+
+	return ioutil.ReadAll(resp.Body)
+}

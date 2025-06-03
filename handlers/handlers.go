@@ -46,6 +46,33 @@ func GetConfig(c *gin.Context) {
 	c.JSON(http.StatusOK, config)
 }
 
+// GetBackgroundImg retrieves the background image for the device based on its SYSTEM_ID
+func GetBackgroundImg(c *gin.Context) {
+	id := os.Getenv("SYSTEM_ID")
+	if len(id) == 0 {
+		c.String(http.StatusInternalServerError, "SYSTEM_ID is not set")
+		return
+	}
+
+	split := strings.Split(id, "-")
+	if len(split) != 3 {
+		c.String(http.StatusInternalServerError, fmt.Sprintf("invalid SYSTEM_ID %q", id))
+		return
+	}
+
+	imgBytes, err := schedule.GetBackgroundImage(c.Request.Context(), split[0]+"-"+split[1])
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	lastRequest = time.Now()
+
+	c.Header("Content-Type", "image/png")
+	c.Header("Cache-Control", "no-cache")
+	c.Data(http.StatusOK, "image/png", imgBytes)
+}
+
 func GetEvents(c *gin.Context) {
 	roomID := c.Param("roomID")
 

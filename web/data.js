@@ -176,6 +176,20 @@ class DataService {
             });
     }
 
+    async getBgImage() {
+        return fetch(this.url + ":" + this.port + "/background")
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`Server responded with status ${res.status}`);
+                }
+                return res.blob();
+            })
+            .catch((err) => {
+                console.error("failed to get background image", err);
+            });
+    }
+
+
     async getScheduleData() {
         const url = this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
         // console.log("Getting schedule data from:", url);

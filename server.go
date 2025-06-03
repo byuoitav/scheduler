@@ -83,6 +83,12 @@ func main() {
 		handlers.GetConfig(c)
 	})
 
+	// get background image
+	r.GET("/background", func(c *gin.Context) {
+		log.P.Info("GET /background endpoint hit")
+		handlers.GetBackgroundImg(c)
+	})
+
 	// get static elements
 	r.GET("/static/:doc", func(c *gin.Context) {
 		log.P.Info("GET /static/:doc endpoint hit", zap.String("doc", c.Param("doc")))

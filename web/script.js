@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         currentComponent = 'home';
         await loadComponent(currentComponent);
+        await loadBgImage();
 
         updateUI();
         setInterval(updateUI, 1000);
@@ -71,6 +72,22 @@ async function loadComponent(name) {
 
     document.body.appendChild(script);
 }
+
+async function loadBgImage() {
+    const html = document.querySelector('html');
+    const image = await window.dataService.getBgImage();
+    if (image) {
+        const url = URL.createObjectURL(image);
+        html.style.backgroundImage = `url(${url})`;
+        html.style.backgroundSize = 'cover';
+    }
+    else {
+        console.warn("No background image found, using default.");
+        html.style.backgroundImage = 'url(assets/bg.png)';
+        html.style.backgroundSize = 'cover';
+    }
+}
+
 
 function updateUI() {
     updateDateTime();
