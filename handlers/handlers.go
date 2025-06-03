@@ -23,7 +23,7 @@ import (
 var lastRequest time.Time
 
 // GetConfig returns the config for this device, based on its SYSTEM_ID
-func GetConfigGin(c *gin.Context) {
+func GetConfig(c *gin.Context) {
 	id := os.Getenv("SYSTEM_ID")
 	if len(id) == 0 {
 		c.String(http.StatusInternalServerError, "SYSTEM_ID is not set")
@@ -46,7 +46,7 @@ func GetConfigGin(c *gin.Context) {
 	c.JSON(http.StatusOK, config)
 }
 
-func GetEventsGin(c *gin.Context) {
+func GetEvents(c *gin.Context) {
 	roomID := c.Param("roomID")
 
 	log.P.Debug("Getting events", zap.String("room", roomID))
@@ -61,7 +61,7 @@ func GetEventsGin(c *gin.Context) {
 	c.JSON(http.StatusOK, eventsList)
 }
 
-func CreateEventGin(c *gin.Context) {
+func CreateEvent(c *gin.Context) {
 	roomID := c.Param("roomID")
 
 	var event calendars.Event
@@ -78,7 +78,7 @@ func CreateEventGin(c *gin.Context) {
 	c.JSON(http.StatusOK, fmt.Sprintf("Successfully created %q in %q", event.Title, roomID))
 }
 
-func GetStaticElementsGin(c *gin.Context) {
+func GetStaticElements(c *gin.Context) {
 	docName := c.Param("doc")
 
 	file, fileType, err := schedule.GetStatic(c.Request.Context(), docName)
@@ -92,7 +92,7 @@ func GetStaticElementsGin(c *gin.Context) {
 	c.DataFromReader(http.StatusOK, -1, fileType, file, nil)
 }
 
-func SendHelpRequestGin(c *gin.Context) {
+func SendHelpRequest(c *gin.Context) {
 	var request schedule.HelpRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.String(http.StatusBadRequest, err.Error())

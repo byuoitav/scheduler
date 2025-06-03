@@ -252,3 +252,8 @@ body {
         transform: rotate(360deg);
     }
 }
+
+.component-container.loading {
+    visibility: hidden;
+    pointer-events: none;
+}

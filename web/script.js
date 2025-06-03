@@ -44,6 +44,8 @@ async function loadComponent(name) {
 
     // load the html
     const componentContainer = document.querySelector('.component-container');
+    componentContainer.classList.add('loading'); // hide before loading
+
     const response = await fetch(htmlPath);
     const html = await response.text();
     componentContainer.innerHTML = html;
@@ -64,7 +66,8 @@ async function loadComponent(name) {
             module.loadPage();
             currentComponent = name;
         }
-    }
+        componentContainer.classList.remove('loading'); // finally show it
+    };
 
     document.body.appendChild(script);
 }
@@ -115,9 +118,9 @@ function cosmoSlide() {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
-    const amplitude = 50;        
-    const frequency = 0.03;     
-    const speed = 2.5;           
+    const amplitude = 50;
+    const frequency = 0.03;
+    const speed = 2.5;
     const scaleGrowth = 0.004;
 
     let posX = 0;
@@ -125,7 +128,7 @@ function cosmoSlide() {
     let frame = 0;
 
     function animate() {
-        
+
         const offsetX = Math.sin(posY * frequency) * amplitude;
         const scale = 1 + (screenHeight - posY) * scaleGrowth;
 
@@ -133,8 +136,8 @@ function cosmoSlide() {
         img.style.top = `${posY}px`;
         img.style.transform = `scale(${scale})`;
 
-        posX += 4.5;   
-        posY -= speed; 
+        posX += 4.5;
+        posY -= speed;
 
         if (posY < -150 || posX > screenWidth + 150) {
             cancelAnimationFrame(frame);

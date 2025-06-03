@@ -1,5 +1,4 @@
 h1 {
-    font-size: 4em;
     margin: 0px;
 }
 
@@ -25,4 +24,8 @@ h1 {
     margin: 0px;
     margin-top: 25px;
     margin-left: 3px;
+}
+
+.room-name {
+    font-size: 4em;
 }

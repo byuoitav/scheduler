@@ -1,6 +1,6 @@
 module github.com/byuoitav/scheduler
 
-go 1.13
+go 1.16
 
 require (
 	github.com/byuoitav/central-event-system v0.0.0-20200121172633-64fd9d467249

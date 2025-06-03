@@ -70,29 +70,29 @@ func main() {
 	// get/create event
 	r.GET("/:roomID/events", func(c *gin.Context) {
 		log.P.Debug("GET /:roomID/events endpoint hit", zap.String("roomID", c.Param("roomID")))
-		handlers.GetEventsGin(c)
+		handlers.GetEvents(c)
 	})
 	r.POST("/:roomID/events", func(c *gin.Context) {
 		log.P.Info("POST /:roomID/events endpoint hit", zap.String("roomID", c.Param("roomID")))
-		handlers.CreateEventGin(c)
+		handlers.CreateEvent(c)
 	})
 
 	// get config for the room
 	r.GET("/config", func(c *gin.Context) {
 		log.P.Info("GET /config endpoint hit")
-		handlers.GetConfigGin(c)
+		handlers.GetConfig(c)
 	})
 
 	// get static elements
 	r.GET("/static/:doc", func(c *gin.Context) {
 		log.P.Info("GET /static/:doc endpoint hit", zap.String("doc", c.Param("doc")))
-		handlers.GetStaticElementsGin(c)
+		handlers.GetStaticElements(c)
 	})
 
 	// send help request
 	r.POST("/help", func(c *gin.Context) {
 		log.P.Info("POST /help endpoint hit")
-		handlers.SendHelpRequestGin(c)
+		handlers.SendHelpRequest(c)
 	})
 
 	// handle load balancer status check
