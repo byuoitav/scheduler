@@ -47,13 +47,42 @@ window.components.book = {
         }
         footer.appendChild(this.createFooterButton('Cancel', 'assets/cancel.svg', 32, 32, () => loadComponent('home')));
         footer.appendChild(this.createFooterButton('Save', 'assets/save.svg', 32, 32, null, 'save-button'));
+        const saveBtn = footer.querySelector('.save-button');
+        saveBtn.disabled = true;
+        saveBtn.classList.add('disabled');
     },
 
     attachSaveHandler() {
-        const saveButton = document.querySelector('.save-button');
-        if (saveButton) {
-            saveButton.addEventListener('click', () => this.createEvent());
-        }
+        const titleInput = document.querySelector('.event-title-input');
+        const startSelect = document.querySelector('.event-start-time');
+        const endSelect = document.querySelector('.event-end-time');
+        const saveBtn = document.querySelector('.save-button');
+
+        if (!titleInput || !startSelect || !endSelect || !saveBtn) return;
+
+        const validate = () => this.validateFormAndToggleSave();
+
+        titleInput.addEventListener('input', validate);
+        startSelect.addEventListener('change', validate);
+        endSelect.addEventListener('change', validate);
+
+        saveBtn.addEventListener('click', () => {
+            if (!saveBtn.disabled) {
+                this.createEvent();
+            }
+        });
+    },
+
+    validateFormAndToggleSave() {
+        const title = document.querySelector('.event-title-input')?.value.trim();
+        const start = document.querySelector('.event-start-time')?.value;
+        const end = document.querySelector('.event-end-time')?.value;
+        const saveBtn = document.querySelector('.save-button');
+        if (!saveBtn) return;
+
+        const isValid = title && start && end;
+        saveBtn.disabled = !isValid;
+        saveBtn.classList.toggle('disabled', !isValid);
     },
 
     removeKeyboard() {
@@ -310,7 +339,7 @@ window.components.book = {
         keyboard.setInput(val);
     },
 
-
+    // Generate time options in 30-minute intervals
     generateTimeOptions() {
         const pad = n => n.toString().padStart(2, '0');
         const to12Hour = (h, m) => {
@@ -331,6 +360,7 @@ window.components.book = {
         return options;
     },
 
+    // Populate start time options in the dropdown
     populateStartOptions(select, options, events) {
         select.innerHTML = '<option value="">Select start time</option>';
         for (const time of options) {
@@ -343,6 +373,7 @@ window.components.book = {
         }
     },
 
+    // Render end options based on selected start time
     renderEndOptions(select, selectedStart, options, events) {
         select.innerHTML = '<option value="">Select end time</option>';
         const startDate = this.toUTCDateFromLocalString(selectedStart);
