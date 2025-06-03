@@ -34,3 +34,16 @@ Example (/schedulers/JET-1106):
 |  DB_USERNAME |             couch username            |
 |  DB_PASSWORD |             couch password            |
 | DB_ADDRESS   | couch address (http://localhost:5984) |
+
+## Endpoints:
+| Endpoint           | Method | Description                                 |
+|--------------------|--------|---------------------------------------------|
+| /:roomID/events    | GET    | Get all events for a room                   |
+| /:roomID/events    | POST   | Create a new event for a room               |
+| /config            | GET    | Get config for the current device           |
+| /background        | GET    | Get the background image for the device     |
+| /static/:doc       | GET    | Get a static element (by doc name)          |
+| /help              | POST   | Send a help request                         |
+| /status            | GET    | Health check/status endpoint                |
+| /log/:level        | GET    | Set the log level (debug, info, warn, etc.) |
+| /web/*             | GET    | Serve static web assets and SPA             |

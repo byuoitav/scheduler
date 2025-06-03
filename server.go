@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/fs"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/byuoitav/scheduler/handlers"
@@ -23,39 +22,38 @@ var (
 
 func main() {
 	var port int
-	var logLevel int
+	var logLevelStr string
 
 	pflag.IntVarP(&port, "port", "p", 80, "port to run the server on")
-	pflag.IntVarP(&logLevel, "log-level", "l", 2, "level of logging wanted. 1=DEBUG, 2=INFO, 3=WARN, 4=ERROR, 5=PANIC")
+	pflag.StringVarP(&logLevelStr, "log-level", "l", "info", "level of logging wanted. debug, info, warn, error, panic")
 	pflag.Parse()
 
-	setLog := func(level int) error {
-		switch level {
-		case 1:
+	setLog := func(levelStr string) error {
+		switch levelStr {
+		case "debug":
 			fmt.Printf("\nSetting log level to *debug*\n\n")
 			log.Config.Level.SetLevel(zap.DebugLevel)
-		case 2:
+		case "info":
 			fmt.Printf("\nSetting log level to *info*\n\n")
 			log.Config.Level.SetLevel(zap.InfoLevel)
-		case 3:
+		case "warn":
 			fmt.Printf("\nSetting log level to *warn*\n\n")
 			log.Config.Level.SetLevel(zap.WarnLevel)
-		case 4:
+		case "error":
 			fmt.Printf("\nSetting log level to *error*\n\n")
 			log.Config.Level.SetLevel(zap.ErrorLevel)
-		case 5:
+		case "panic":
 			fmt.Printf("\nSetting log level to *panic*\n\n")
 			log.Config.Level.SetLevel(zap.PanicLevel)
 		default:
-			return errors.New("invalid log level: must be [1-4]")
+			return errors.New("invalid log level: must be one of debug, info, warn, error, panic")
 		}
-
 		return nil
 	}
 
 	// set the initial log level
-	if err := setLog(logLevel); err != nil {
-		log.P.Fatal("unable to set log level", zap.Error(err), zap.Int("got", logLevel))
+	if err := setLog(logLevelStr); err != nil {
+		log.P.Fatal("unable to set log level", zap.Error(err), zap.String("got", logLevelStr))
 	}
 
 	// Setup the Frontend
@@ -69,57 +67,89 @@ func main() {
 
 	// get/create event
 	r.GET("/:roomID/events", func(c *gin.Context) {
-		log.P.Debug("GET /:roomID/events endpoint hit", zap.String("roomID", c.Param("roomID")))
+		log.P.Debug("GET /:roomID/events", zap.String("roomID", c.Param("roomID")))
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "event retrieval request aborted before processing")
+			return
+		}
 		handlers.GetEvents(c)
 	})
 	r.POST("/:roomID/events", func(c *gin.Context) {
-		log.P.Info("POST /:roomID/events endpoint hit", zap.String("roomID", c.Param("roomID")))
+		logRequestAndStatus(c, "POST /:roomID/events", zap.String("roomID", c.Param("roomID")))
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "event creation request aborted before processing")
+			return
+		}
 		handlers.CreateEvent(c)
 	})
 
 	// get config for the room
 	r.GET("/config", func(c *gin.Context) {
-		log.P.Info("GET /config endpoint hit")
+		logRequestAndStatus(c, "GET /config")
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "config request aborted before processing")
+			return
+		}
 		handlers.GetConfig(c)
 	})
 
 	// get background image
 	r.GET("/background", func(c *gin.Context) {
-		log.P.Info("GET /background endpoint hit")
+		logRequestAndStatus(c, "GET /background")
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "background image request aborted before processing")
+			return
+		}
 		handlers.GetBackgroundImg(c)
 	})
 
 	// get static elements
 	r.GET("/static/:doc", func(c *gin.Context) {
-		log.P.Info("GET /static/:doc endpoint hit", zap.String("doc", c.Param("doc")))
+		logRequestAndStatus(c, "GET /static/:doc", zap.String("doc", c.Param("doc")))
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "static elements request aborted before processing")
+			return
+		}
 		handlers.GetStaticElements(c)
 	})
 
 	// send help request
 	r.POST("/help", func(c *gin.Context) {
-		log.P.Info("POST /help endpoint hit")
+		logRequestAndStatus(c, "POST /help")
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "help request aborted before processing")
+			return
+		}
 		handlers.SendHelpRequest(c)
 	})
 
 	// handle load balancer status check
 	r.GET("/status", func(c *gin.Context) {
-		log.P.Info("GET /status endpoint hit")
+		logRequestAndStatus(c, "GET /status")
+		if c.IsAborted() {
+			log.P.Error("Request aborted before processing")
+			c.String(http.StatusInternalServerError, "status check request aborted before processing")
+			return
+		}
 		c.String(http.StatusOK, "healthy")
 	})
 
 	// set the log level
 	r.GET("/log/:level", func(c *gin.Context) {
-		log.P.Info("GET /log/:level endpoint hit", zap.String("level", c.Param("level")))
-		level, err := strconv.Atoi(c.Param("level"))
-		if err != nil {
-			c.String(http.StatusBadRequest, err.Error())
+		levelStr := c.Param("level")
+		log.P.Info("GET /log/:level", zap.String("level", levelStr))
+		if err := setLog(levelStr); err != nil {
+			log.P.Error("Invalid log level string", zap.String("level", levelStr))
+			c.String(http.StatusBadRequest, "invalid log level: must be one of debug, info, warn, error, panic")
 			return
 		}
-		if err := setLog(level); err != nil {
-			c.String(http.StatusBadRequest, err.Error())
-			return
-		}
-		c.String(http.StatusOK, fmt.Sprintf("Set log level to %v", level))
+		c.String(http.StatusOK, fmt.Sprintf("Set log level to %s", levelStr))
 	})
 
 	r.StaticFS("/web", http.FS(subFS))
@@ -131,9 +161,10 @@ func main() {
 			c.FileFromFS("index.html", http.FS(subFS))
 		} else {
 			c.String(http.StatusNotFound, "Not found")
+			log.P.Error("404 Not Found", zap.String("path", c.Request.URL.Path))
 		}
 	})
-
+	// i'm
 	go handlers.SendWebsocketCount(3 * time.Minute)
 
 	addr := fmt.Sprintf(":%d", port)
@@ -141,4 +172,11 @@ func main() {
 	if err != nil {
 		log.P.Fatal("failed to start server", zap.Error(err))
 	}
+}
+
+// Helper: log request and response status
+func logRequestAndStatus(c *gin.Context, msg string, fields ...zap.Field) {
+	c.Next() // process the handler
+	status := c.Writer.Status()
+	log.P.Info(msg, append(fields, zap.Int("status", status))...)
 }
