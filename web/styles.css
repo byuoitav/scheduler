@@ -235,17 +235,6 @@ body {
     vertical-align: middle;
 }
 
-#cosmo-rocket {
-  position: fixed;
-  width: 100px;
-  height: auto;
-  pointer-events: none;
-  z-index: 9999;
-  left: 0;
-  bottom: 0;
-}
-
-
 @keyframes spin {
     to {
         transform: rotate(360deg);
