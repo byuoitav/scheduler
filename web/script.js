@@ -110,8 +110,8 @@ function updateDateTime() {
     timeElement.textContent = `${hours}:${minutes}`;
 
     // Format date like "Thursday, May 22"
-    const options = { weekday: 'long', month: 'long', day: 'numeric' };
-    dateElement.textContent = now.toLocaleDateString(undefined, options);
+    const options = { weekday: 'long', month: 'short', day: 'numeric' };
+    dateElement.textContent = now.toLocaleDateString('en-US', options);
 }
 
 function updateHeaderColor() {
@@ -123,8 +123,6 @@ function updateHeaderColor() {
         header.style.backgroundColor = "#F44336"; // Red
     }
 }
-
-
 
 function showHelp() {
     const helpContainer = document.querySelector('.help-container');

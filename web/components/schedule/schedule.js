@@ -36,8 +36,8 @@ window.components.schedule = {
         backButton.classList.add('back-button');
         const backImg = document.createElement('img');
         backImg.src = "assets/arrow-left.svg";
-        backImg.width = 60;
-        backImg.height = 60;
+        backImg.width = 50;
+        backImg.height = 50;
         backButton.appendChild(backImg);
         backButton.addEventListener('click', () => {
             loadComponent('home');
@@ -49,7 +49,7 @@ window.components.schedule = {
         const header = document.querySelector('.header');
         const title = document.createElement('h1');
         title.classList.add('schedule-title');
-        title.textContent = "The JET Schedule";
+        title.textContent = "Schedule";
         header.appendChild(title);
     },
 

@@ -81,7 +81,7 @@ function Build {
         Write-Output "Building for linux-arm"
         Set-Item -Path env:CGO_ENABLED -Value 0
         Set-Item -Path env:GOOS -Value "linux"
-        Set-Item -Path env:GOARCH -Value "arm"
+        Set-Item -Path env:GOARCH -Value "arm64"
         Invoke-Expression "go build -v -o ./dist/${NAME}-arm"
 
         Write-Output "Build output is located in ./dist/."
@@ -112,7 +112,7 @@ function DockerFunc {   #can not just be docker because it creates an infinite l
         Invoke-Expression "docker build -f .\dockerfile --build-arg NAME=$NAME-amd64 -t $DOCKER_PKG/$NAME-amd64-dev:$COMMIT_HASH dist"
 
         Write-Output "Building container $DOCKER_PKG/$NAME-arm-dev:$COMMIT_HASH"
-        Invoke-Expression "docker build -f .\dockerfile --build-arg NAME=$NAME-arm -t $DOCKER_PKG/$NAME-arm-dev:$COMMIT_HASH dist"
+        Invoke-Expression "docker build --platform linux/arm64 -f .\dockerfile --build-arg NAME=$NAME-arm -t $DOCKER_PKG/$NAME-arm-dev:$COMMIT_HASH dist"
     } elseif ($TAG -match $DEV_TAG_REGEX) {
         Write-Output "Building dev containers with tag $TAG"
 
@@ -120,7 +120,7 @@ function DockerFunc {   #can not just be docker because it creates an infinite l
         Invoke-Expression "docker build -f .\dockerfile --build-arg NAME=$NAME-amd64 -t $DOCKER_PKG/$NAME-amd64-dev:$TAG dist"
 
         Write-Output "Building container $DOCKER_PKG/$NAME-arm-dev:$TAG"
-        Invoke-Expression "docker build -f .\dockerfile --build-arg NAME=$NAME-arm -t $DOCKER_PKG/$NAME-arm-dev:$TAG dist"
+        Invoke-Expression "docker build --platform linux/arm64 -f .\dockerfile --build-arg NAME=$NAME-arm -t $DOCKER_PKG/$NAME-arm-dev:$TAG dist"
     } elseif ($TAG -match $PRD_TAG_REGEX) {
         Write-Output "Building prd containers with tag $TAG"
 
@@ -128,7 +128,7 @@ function DockerFunc {   #can not just be docker because it creates an infinite l
         Invoke-Expression "docker build -f .\dockerfile --build-arg NAME=$NAME-amd64 -t $DOCKER_PKG/${NAME}-amd64:$TAG dist"
 
     	Write-Output "Building container $DOCKER_PKG/${NAME}:$TAG"
-    	Invoke-Expression "docker build -f .\dockerfile --build-arg NAME=$NAME-arm -t $DOCKER_PKG/${NAME}-arm:$TAG dist"
+    	Invoke-Expression "docker build --platform linux/arm64 -f .\dockerfile --build-arg NAME=$NAME-arm -t $DOCKER_PKG/${NAME}-arm:$TAG dist"
     } else {
         Write-Output "Docker function quit unexpectedly. Commit Hash: $COMMIT_HASH     Tag: $TAG"
     }

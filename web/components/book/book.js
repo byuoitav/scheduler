@@ -4,6 +4,8 @@ window.components.book = {
     keyboard: null,
     keyboardContainer: null,
     activeInput: null,
+    startDropDown: null,
+    endDropDown: null,
 
     // --- Entry Points ---
     loadPage() {
@@ -12,7 +14,6 @@ window.components.book = {
         this.addNavButtons();
         this.addKeyboard();
         this.populateTimeDropdowns();
-        this.attachSaveHandler();
     },
 
     cleanup() {
@@ -26,7 +27,7 @@ window.components.book = {
     // --- UI Setup ---
     addBackArrow() {
         const header = document.querySelector('.header');
-        const backButton = this.createButtonWithImg('back-button', 'assets/arrow-left.svg', 60, 60);
+        const backButton = this.createButtonWithImg('back-button', 'assets/arrow-left.svg', 50, 50);
         backButton.addEventListener('click', () => loadComponent('home'));
         header.appendChild(backButton);
     },
@@ -54,17 +55,14 @@ window.components.book = {
 
     attachSaveHandler() {
         const titleInput = document.querySelector('.event-title-input');
-        const startSelect = document.querySelector('.event-start-time');
-        const endSelect = document.querySelector('.event-end-time');
         const saveBtn = document.querySelector('.save-button');
-
-        if (!titleInput || !startSelect || !endSelect || !saveBtn) return;
 
         const validate = () => this.validateFormAndToggleSave();
 
         titleInput.addEventListener('input', validate);
-        startSelect.addEventListener('change', validate);
-        endSelect.addEventListener('change', validate);
+        console.log("Attaching dropdown change listeners");
+        this.startDropDown.onChange(validate);
+        this.endDropDown.onChange(validate);
 
         saveBtn.addEventListener('click', () => {
             if (!saveBtn.disabled) {
@@ -75,8 +73,8 @@ window.components.book = {
 
     validateFormAndToggleSave() {
         const title = document.querySelector('.event-title-input')?.value.trim();
-        const start = document.querySelector('.event-start-time')?.value;
-        const end = document.querySelector('.event-end-time')?.value;
+        const start = this.startDropDown?.value;
+        const end = this.endDropDown?.value;
         const saveBtn = document.querySelector('.save-button');
         if (!saveBtn) return;
 
@@ -116,7 +114,7 @@ window.components.book = {
                 onKeyPress: button =>
                     this.handleKeyboardPress(button, isShift => isShift = !isShift, () => isShift = false)
             });
-
+            this.labelSpaceButton();
             this.keyboard.setInput(input.value);
         });
 
@@ -132,32 +130,34 @@ window.components.book = {
 
     // --- Dropdowns ---
     async populateTimeDropdowns() {
+        this.endDropDown = new CustomDropdown("event-end-time", [], "Select end time", false);
         const events = await window.dataService.getSchedule();
         const options = this.generateTimeOptions();
-        const selectStart = document.querySelector('.event-start-time');
-        const selectEnd = document.querySelector('.event-end-time');
-        if (!selectStart || !selectEnd) return;
 
-        this.populateStartOptions(selectStart, options, events);
-        selectEnd.innerHTML = '<option value="">Select end time</option>';
-        selectEnd.disabled = true;
+        this.startDropDown = new CustomDropdown("event-start-time", [], "Select start time", true);
+        for (const time of options) {
+            const blocked = this.isTimeBlocked(time, events, true);
+            this.startDropDown.addOption(time, time, blocked);
+        }
 
-        selectStart.addEventListener('change', () => {
-            if (selectStart.value) {
-                selectEnd.disabled = false;
-                this.renderEndOptions(selectEnd, selectStart.value, options, events);
-            } else {
-                selectEnd.disabled = true;
-                selectEnd.innerHTML = '<option value="">Select end time</option>';
+        this.startDropDown.onChange(() => {
+            console.log("Start time changed, disabling end time");
+            if (this.startDropDown.value) {
+                console.log(this.startDropDown.value)
+                this.endDropDown.setEnabled(true);
+                this.endDropDown.reset();
+                this.renderEndOptions(this.endDropDown, this.startDropDown.value, options, events);
             }
         });
+
+        this.attachSaveHandler();
     },
 
     // --- Event Creation ---
     createEvent() {
         const titleInput = document.querySelector('.event-title-input');
-        const startSelect = document.querySelector('.event-start-time');
-        const endSelect = document.querySelector('.event-end-time');
+        const startSelect = this.startDropDown;
+        const endSelect = this.endDropDown;
         const overlay = document.querySelector('.event-submission-container');
         const confirmationText = document.querySelector('.confirmation-text');
         const symbol = document.querySelector('.symbol');
@@ -268,7 +268,7 @@ window.components.book = {
         return {
             dayOfWeek: now.toLocaleDateString('en-US', { weekday: 'long' }),
             dayOfMonth: now.getDate(),
-            monthName: now.toLocaleDateString('en-US', { month: 'long' }),
+            monthName: now.toLocaleDateString('en-US', { month: 'short' }),
             roomName: window.dataService.status.roomName
         };
     },
@@ -298,17 +298,27 @@ window.components.book = {
                 "1 2 3 4 5 6 7 8 9 0 - = {bksp}",
                 "q w e r t y u i o p",
                 "a s d f g h j k l {enter}",
-                "z x c v b n m",
-                "{shift} {space}"
+                "{shift} z x c v b n m {space}",
             ],
             shift: [
                 "! @ # $ % ^ & * ( ) _ + {bksp}",
                 "Q W E R T Y U I O P",
                 "A S D F G H J K L {enter}",
-                "Z X C V B N M",
-                "{shift} {space}"
+                "{shift} Z X C V B N M {space}",
             ]
         };
+    },
+
+    labelSpaceButton() {
+        const spaceBtn = document.querySelector(
+            '.hg-button.hg-functionBtn.hg-button-space'
+        );
+        if (spaceBtn) {
+            const span = spaceBtn.querySelector('span');
+            if (span) {
+                span.textContent = '  SPACE  ';
+            }
+        }
     },
 
     handleKeyboardPress(button, toggleShift, resetShift) {
@@ -324,10 +334,11 @@ window.components.book = {
         } else if (button === "{shift}") {
             toggleShift();
             keyboard.setOptions({ layoutName: keyboard.options.layoutName === "default" ? "shift" : "default" });
+            this.labelSpaceButton();
             return;
         } else if (button === "{enter}") {
             document.activeElement.blur();
-            this.removeKeyboard(); // ✅ Cleanly resets state
+            this.removeKeyboard(); // cleanly resets state
             return;
         } else if (!button.startsWith("{")) {
             val += button;
@@ -337,6 +348,7 @@ window.components.book = {
 
         input.value = val;
         keyboard.setInput(val);
+        this.labelSpaceButton();
     },
 
     // Generate time options in 30-minute intervals
@@ -360,33 +372,37 @@ window.components.book = {
         return options;
     },
 
-    // Populate start time options in the dropdown
-    populateStartOptions(select, options, events) {
-        select.innerHTML = '<option value="">Select start time</option>';
-        for (const time of options) {
-            const blocked = this.isTimeBlocked(time, events, true);
-            const option = document.createElement('option');
-            option.value = time;
-            option.textContent = blocked ? `${time} (In Use)` : time;
-            option.disabled = blocked;
-            select.appendChild(option);
-        }
-    },
-
     // Render end options based on selected start time
     renderEndOptions(select, selectedStart, options, events) {
-        select.innerHTML = '<option value="">Select end time</option>';
         const startDate = this.toUTCDateFromLocalString(selectedStart);
+        select.options = []; // Clear existing options
+
+        // Find the next meeting after the selected start time
+        let nextMeetingStart = null;
+        for (const event of events) {
+            const eventStart = new Date(event.startTime);
+            if (eventStart > startDate) {
+                if (!nextMeetingStart || eventStart < nextMeetingStart) {
+                    nextMeetingStart = eventStart;
+                }
+            }
+        }
+
         for (const time of options) {
             const endDate = this.toUTCDateFromLocalString(time);
             const timeDiffMin = (endDate - startDate) / (1000 * 60);
-            const blocked = this.isTimeBlocked(time, events, false);
+            let blocked = this.isTimeBlocked(time, events, false);
+
+            // Only allow end times that are after start time, within 2 hours, and before next meeting
+            const isAfterStart = timeDiffMin > 0;
+            const isWithin2Hours = timeDiffMin <= 120;
+            const isBeforeNextMeeting = !nextMeetingStart || endDate <= nextMeetingStart;
+
             const option = document.createElement('option');
             option.value = time;
-            option.textContent = blocked ? `${time} (In Use)` : time;
-            // Only allow end times that are after start time and within 2 hours
-            select.appendChild(option);
-            option.disabled = blocked || timeDiffMin <= 0 || timeDiffMin > 120;
+            const textContent = blocked ? `${time} (In Use)` : time;
+            blocked = blocked || !isAfterStart || !isWithin2Hours || !isBeforeNextMeeting;
+            select.addOption(textContent, time, blocked);
         }
     },
 
@@ -400,28 +416,44 @@ window.components.book = {
     },
 
     toUTCDateFromLocalString(timeStr) {
-        const [time, meridian] = timeStr.split(' ');
-        let [hour, minute] = time.split(':').map(Number);
+        const [time, meridian] = timeStr.split(" ");
+        let [hour, minute] = time.split(":").map(Number);
         if (meridian === "PM" && hour !== 12) hour += 12;
         if (meridian === "AM" && hour === 12) hour = 0;
+
         const now = new Date();
-        const dateStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
-        const utahMillis = Date.parse(
-            new Date(dateStr).toLocaleString('en-US', { timeZone: 'America/Denver' })
+        const localDate = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            hour,
+            minute,
+            0,
+            0
         );
-        return new Date(utahMillis);
+        return localDate;
     },
+
 
     // Format as ISO with time zone offset (local time)
     toIsoWithOffset(date) {
-        const tzOffset = -date.getTimezoneOffset();
-        const diffHours = Math.floor(Math.abs(tzOffset) / 60);
-        const diffMinutes = Math.abs(tzOffset) % 60;
-        const sign = tzOffset >= 0 ? '+' : '-';
-        const pad = num => String(num).padStart(2, '0');
-        const iso = date.toISOString().slice(0, 19);
-        return `${iso}${sign}${pad(diffHours)}:${pad(diffMinutes)}`;
+        const tzOffset = -date.getTimezoneOffset(); // in minutes
+        const sign = tzOffset >= 0 ? "+" : "-";
+        const pad = num => String(Math.floor(Math.abs(num))).padStart(2, "0");
+
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        const seconds = pad(date.getSeconds());
+
+        const offsetHours = pad(tzOffset / 60);
+        const offsetMinutes = pad(tzOffset % 60);
+
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${sign}${offsetHours}:${offsetMinutes}`;
     },
+
 
     // Parse time strings into local Date objects with today's date
     parseTimeToDate(timeStr) {

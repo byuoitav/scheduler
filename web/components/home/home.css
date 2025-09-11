@@ -3,10 +3,10 @@ h1 {
 }
 
 .available-text {
-    font-size: 4.3em;
+    font-size: 4.0em;
     color: white;
     margin: 0px;
-    margin-top: 25px;
+    margin-top: 15px;
     color: #74be06;
 }
 
@@ -19,7 +19,7 @@ h1 {
 }
 
 .meeting-name {
-    font-size: 2.5em;
+    font-size: 2.1em;
     color: white;
     margin: 0px;
     margin-top: 25px;
@@ -27,5 +27,5 @@ h1 {
 }
 
 .room-name {
-    font-size: 4em;
+    font-size: 3em;
 }

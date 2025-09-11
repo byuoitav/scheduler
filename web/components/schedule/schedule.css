@@ -17,6 +17,19 @@
     overflow: auto;
     height: 350px;
     padding: 0px;
+    overflow-y: auto;
+    /* enable scroll */
+    -webkit-overflow-scrolling: touch;
+
+    /* Allow dragging with mouse/touch */
+    touch-action: pan-y;
+    /* enables vertical dragging */
+    cursor: grab;
+
+}
+
+.schedule-list:active {
+    cursor: grabbing;
 }
 
 .schedule-item {
@@ -34,6 +47,7 @@
 
 .schedule-item h2 {
     margin: 5px;
+    font-size: 1.2em;
     margin-bottom: 15px;
     color: #ffffff;
 }
@@ -50,7 +64,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    font-size: 1.3em;
+    font-size: 1.1em;
     color: #5e5c5c;
     font-weight: bold;
 }
@@ -58,6 +72,3 @@
 .schedule-item-content p {
     margin: 5px;
 }
-
-
-
