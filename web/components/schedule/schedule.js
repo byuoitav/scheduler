@@ -1,12 +1,18 @@
 window.components = window.components || {};
 
 window.components.schedule = {
+    inactivityTimeout: null,
+    inactivityDuration: 60000, // 60 seconds
+
     loadPage: function () {
         console.log
         this.addBackArrow();
         this.addScheduleTitle();
         this.addNavButtons();
         this.addEvents();
+        this.startInactivityTimer();
+        this.addInteractionListeners();
+        this.addScrollToSchedule();
     },
 
     cleanup: function () {
@@ -27,7 +33,44 @@ window.components.schedule = {
             button.remove();
         });
 
+        this.clearInactivityTimer();
+
     },
+
+    startInactivityTimer: function () {
+        this.clearInactivityTimer();
+        this.inactivityTimeout = setTimeout(() => {
+            const backButton = document.querySelector('.header .back-button');
+            if (backButton) backButton.click();
+        }, this.inactivityDuration);
+    },
+
+    clearInactivityTimer: function () {
+        if (this.inactivityTimeout) {
+            clearTimeout(this.inactivityTimeout);
+            this.inactivityTimeout = null;
+        }
+    },
+
+    addInteractionListeners: function () {
+        const scheduleList = document.querySelector('.schedule-list');
+        if (!scheduleList) return;
+
+        const resetTimer = () => this.startInactivityTimer();
+
+        // Mouse interactions
+        scheduleList.addEventListener('mousedown', resetTimer);
+        scheduleList.addEventListener('mousemove', resetTimer);
+        scheduleList.addEventListener('mouseup', resetTimer);
+
+        // Touch interactions
+        scheduleList.addEventListener('touchstart', resetTimer);
+        scheduleList.addEventListener('touchmove', resetTimer);
+        scheduleList.addEventListener('touchend', resetTimer);
+
+        scheduleList.addEventListener('scroll', resetTimer);
+    },
+
 
     addBackArrow: function () {
         console.log("Adding back arrow");
@@ -141,8 +184,8 @@ window.components.schedule = {
             // start time and end time (11:42 AM - 12:14 PM)
             const timeElement = document.createElement('p');
             timeElement.classList.add('schedule-item-times');
-            const startTimeFormatted = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const endTimeFormatted = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const startTimeFormatted = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            const endTimeFormatted = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
             timeElement.textContent = `${startTimeFormatted} - ${endTimeFormatted}`;
             scheduleItemContent.appendChild(timeElement);
 
@@ -153,9 +196,48 @@ window.components.schedule = {
             const title = document.createElement('h2');
             title.textContent = event.title;
 
-
         });
 
+    },
+
+    addScrollToSchedule: function () {
+        const scheduleList = document.querySelector('.schedule-list');
+
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let startY;
+        let scrollTop;
+
+        scheduleList.addEventListener('mousedown', (e) => {
+            isDown = true;
+            scheduleList.classList.add('active');
+            startX = e.pageX - scheduleList.offsetLeft;
+            startY = e.pageY - scheduleList.offsetTop;
+            scrollLeft = scheduleList.scrollLeft;
+            scrollTop = scheduleList.scrollTop;
+        });
+
+        scheduleList.addEventListener('mouseleave', () => {
+            isDown = false;
+            scheduleList.classList.remove('active');
+        });
+
+        scheduleList.addEventListener('mouseup', () => {
+            isDown = false;
+            scheduleList.classList.remove('active');
+        });
+
+        scheduleList.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - scheduleList.offsetLeft;
+            const y = e.pageY - scheduleList.offsetTop;
+            const walkX = (x - startX) * 1; // multiplier adjusts scroll speed
+            const walkY = (y - startY) * 1;
+            scheduleList.scrollLeft = scrollLeft - walkX;
+            scheduleList.scrollTop = scrollTop - walkY;
+        });
     },
 
     calculateHours: function (startTime, endTime) {
@@ -180,5 +262,6 @@ window.components.schedule = {
             const startB = new Date(b.startTime);
             return startA - startB; // Sort by start time
         });
-    }
+    },
+
 }

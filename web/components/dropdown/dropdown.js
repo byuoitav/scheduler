@@ -144,7 +144,7 @@ class CustomDropdown {
             this.menu.style.bottom = `${rect.height}px`;
             this.menu.style.top = "auto";
             this.menu.classList.add("open-up");
-            this.menu.style.maxHeight = "240px";
+            this.menu.style.maxHeight = "265px";
             this.menu.classList.toggle("show");
         });
 

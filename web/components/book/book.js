@@ -1,6 +1,8 @@
 window.components = window.components || {};
 
 window.components.book = {
+    inactivityTimeout: null,
+    inactivityDuration: 60000, // 60 seconds
     keyboard: null,
     keyboardContainer: null,
     activeInput: null,
@@ -14,6 +16,8 @@ window.components.book = {
         this.addNavButtons();
         this.addKeyboard();
         this.populateTimeDropdowns();
+        this.startInactivityTimer();
+        this.addInteractionListeners();
     },
 
     cleanup() {
@@ -22,6 +26,7 @@ window.components.book = {
         this.removeElement('.header h1');
         this.removeFooterButtons();
         this.removeHeaderInfo();
+        this.clearInactivityTimer();
     },
 
     // --- UI Setup ---
@@ -127,6 +132,40 @@ window.components.book = {
         });
     },
 
+    // --- Timeout Stuff ---
+    startInactivityTimer: function () {
+        this.clearInactivityTimer();
+        this.inactivityTimeout = setTimeout(() => {
+            const backButton = document.querySelector('.header .back-button');
+            if (backButton) backButton.click();
+        }, this.inactivityDuration);
+    },
+
+    clearInactivityTimer: function () {
+        if (this.inactivityTimeout) {
+            clearTimeout(this.inactivityTimeout);
+            this.inactivityTimeout = null;
+        }
+    },
+
+    addInteractionListeners: function () {
+        const body = document.querySelector('.main');
+        if (!body) return;
+
+        const resetTimer = () => this.startInactivityTimer();
+
+        // Mouse interactions
+        body.addEventListener('mousedown', resetTimer);
+        body.addEventListener('mousemove', resetTimer);
+        body.addEventListener('mouseup', resetTimer);
+
+        // Touch interactions
+        body.addEventListener('touchstart', resetTimer);
+        body.addEventListener('touchmove', resetTimer);
+        body.addEventListener('touchend', resetTimer);
+
+        body.addEventListener('scroll', resetTimer);
+    },
 
     // --- Dropdowns ---
     async populateTimeDropdowns() {
@@ -222,6 +261,7 @@ window.components.book = {
         startSelect.selectedIndex = 0;
         endSelect.selectedIndex = 0;
     },
+    
     // --- Helpers ---
     createButtonWithImg(className, imgSrc, imgW, imgH) {
         const btn = document.createElement('div');
