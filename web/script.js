@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setInterval(updateUI, 1000);
 
         // reset error state every minute
-        setInterval(window.schedulerError.clear, 60 * 1000);
+        setInterval(() => window.schedulerError.clear(), 60 * 1000);
     });
 });
 

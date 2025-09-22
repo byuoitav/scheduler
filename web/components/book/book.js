@@ -238,6 +238,7 @@ window.components.book = {
                 symbol.width = 60;
                 symbol.height = 60;
                 confirmationText.textContent = 'Event Submitted Successfully.';
+                window.dataService.getScheduleData();
             })
             .catch(() => {
                 symbol.src = 'assets/x.png';

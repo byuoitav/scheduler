@@ -129,9 +129,20 @@ class DataService {
         await this.getScheduleData();
         this.getCurrentEvent();
 
-        setInterval(() => this.getScheduleData(), 1000);
+        // Update every minute on the minute
+        const updateOnMinute = () => {
+            this.getScheduleData();
+            // Schedule next update at the next minute boundary
+            const now = new Date();
+            const msToNextMinute = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+            setTimeout(updateOnMinute, msToNextMinute);
+        };
+        // Start the first update at the next minute boundary
+        const now = new Date();
+        const msToNextMinute = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+        setTimeout(updateOnMinute, msToNextMinute);
     }
-
+    
     getRoomStatus() { return this.status; }
     getSchedule() { return this.currentSchedule; }
 
