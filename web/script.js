@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    window.schedulerError = new schedulerError("");
     // create the data service
     window.dataService = await new DataService();
     window.dataService.init().then(async () => {
@@ -11,6 +12,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         updateUI();
         setInterval(updateUI, 1000);
+
+        // reset error state every ten minutes
+        setInterval(window.schedulerError.clear, 10 * 60 * 1000);
     });
 });
 
@@ -92,6 +96,7 @@ async function loadBgImage() {
 function updateUI() {
     updateDateTime();
     updateHeaderColor();
+    checkErrorState();
 }
 
 function updateDateTime() {
@@ -133,6 +138,13 @@ function showHelp() {
     }
 }
 
+function showError() {
+    const errorContainer = document.querySelector('.error-modal');
+    const errorMessage = document.querySelector('.error-message');
+    errorMessage.textContent = window.schedulerError.message || "An unknown error occurred.";
+    errorContainer.classList.remove('hidden');
+}
+
 function closeHelp() {
     const helpContainer = document.querySelector('.help-container');
     if (helpContainer) {
@@ -146,6 +158,16 @@ function closeHelp() {
     getHelp.classList.remove('hidden');
     const helpConfirmation = document.querySelector('.help-confirmation');
     helpConfirmation.classList.add('hidden');
+}
+
+function closeError() {
+    const errorModal = document.querySelector('.error-modal');
+    window.schedulerError.clear();
+    if (errorModal) {
+        errorModal.classList.add('hidden');
+    } else {
+        console.warn("Error container not found");
+    }
 }
 
 async function requestHelp() {
@@ -177,5 +199,26 @@ async function requestHelp() {
     }
 }
 
+function checkErrorState() {
+    if (window.schedulerError.isError) {
+        errorContainer = document.querySelector('.error-container');
+        errorContainer.classList.remove('hidden');
+    } else {
+        errorContainer = document.querySelector('.error-container');
+        errorContainer.classList.add('hidden');
+    }
+}
 
+// error class
+class schedulerError {
+    constructor(message, isError = false) {
+        this.message = message;
+        this.isError = isError;
+    }
+
+    clear() {
+        this.isError = false;
+        this.message = "";
+    }
+}
 

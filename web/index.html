@@ -56,6 +56,8 @@
         </button> -->
 
     </div>
+
+    <!-- Help and error modals  -->
     <div class="help-container hidden">
         <div class="help-modal">
             <div class="get-help">
@@ -86,6 +88,21 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <div class="error-container" onclick="showError()">
+        <img src="assets/error.svg" alt="Error" width="50" height="50"  />
+    </div>
+    
+    <div class="error-modal hidden">
+        <div class="error-content">
+            <h2>Error</h2>
+            <p class="error-message">An error has occurred.</p>
+            <button class="close-error-button" onclick="closeError()">
+                Close
+            </button>
+        </div>
+    </div>
 </body>
 
 </html>

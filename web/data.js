@@ -104,7 +104,6 @@ class HelpRequest {
     getRoomId() { return this.roomId; }
 }
 
-
 class DataService {
     constructor() {
         const base = location.origin.split(":");
@@ -130,7 +129,6 @@ class DataService {
         await this.getScheduleData();
         this.getCurrentEvent();
 
-        // refresh periodically
         setInterval(() => this.getScheduleData(), 1000);
     }
 
@@ -149,31 +147,52 @@ class DataService {
                     return event;
                 }
             }
-        } else {
         }
 
         this.status.unoccupied = true;
         return null;
     }
 
-    getConfig() {
-        console.log("Getting config...");
+    async safeFetch(url, options, actionDescription) {
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) {
+                let serverMessage = "";
+                try {
+                    serverMessage = await res.text();
+                } catch (_) {
+                    serverMessage = "<no response body>";
+                }
+                // @ts-ignore
+                window.schedulerError = new schedulerError(
+                    `Error while ${actionDescription}. Status: ${res.status} ${res.statusText}. Server message: ${serverMessage}`,
+                    true
+                );
+                return null;
+            }
+            return res;
+        } catch (err) {
+            // @ts-ignore
+            window.schedulerError = new schedulerError(
+                `Network error while ${actionDescription}: ${err.message}`,
+                true
+            );
+            return null;
+        }
+    }
 
-        return fetch(this.url + ":" + this.port + "/config")
-            .then((res) => res.json())
-            .then((data) => {
-                this.config = data;
-                console.log("config", this.config);
-                this.status.setRoomName(this.config["displayName"] ?? "");
-                this.status.setDeviceName(this.config["_id"] ?? "");
-                this.status.setDisplayBookNow(this.config["canCreateEvents"] ?? true);
-                this.status.setDisplayTitle(this.config["displayMeetingTitle"] ?? true);
-                this.status.setDisplayHelp(this.config["canRequestHelp"] ?? true);
-            })
-            .catch((err) => {
-                console.error("failed to get config", err);
-                setTimeout(() => this.getConfig(), 5000);
-            });
+    async getConfig() {
+        console.log("Getting config...");
+        const res = await this.safeFetch(this.url + ":" + this.port + "/config", {}, "getting config from couchdb");
+        if (!res) return;
+        const data = await res.json();
+        this.config = data;
+        console.log("config", this.config);
+        this.status.setRoomName(this.config["displayName"] ?? "");
+        this.status.setDeviceName(this.config["_id"] ?? "");
+        this.status.setDisplayBookNow(this.config["canCreateEvents"] ?? true);
+        this.status.setDisplayTitle(this.config["displayMeetingTitle"] ?? true);
+        this.status.setDisplayHelp(this.config["canRequestHelp"] ?? true);
     }
 
     async getBgImage() {
@@ -192,37 +211,29 @@ class DataService {
 
     async getScheduleData() {
         const url = this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
-        // console.log("Getting schedule data from:", url);
+        const res = await this.safeFetch(url, {}, "getting schedule data");
+        if (!res) return;
+        const data = await res.json();
 
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-
-            if (!data || data.length === 0) {
-                this.status.setEmptySchedule(true);
-            } else {
-                this.status.setEmptySchedule(false);
-                this.currentSchedule = data.map(
-                    (e) =>
-                        new ScheduledEvent({
-                            title: e.title,
-                            startTime: new Date(e.startTime).toISOString(),
-                            endTime: new Date(e.endTime).toISOString()
-                        })
-                );
-            }
-
-            // console.log("Schedule updated");
-        } catch (err) {
-            console.error("failed to get schedule data", err);
+        if (!data || data.length === 0) {
+            this.status.setEmptySchedule(true);
+        } else {
+            this.status.setEmptySchedule(false);
+            this.currentSchedule = data.map(
+                (e) =>
+                    new ScheduledEvent({
+                        title: e.title,
+                        startTime: new Date(e.startTime).toISOString(),
+                        endTime: new Date(e.endTime).toISOString()
+                    })
+            );
         }
     }
-
 
     /**
      * @param {ScheduledEvent} event
      */
-    submitNewEvent(event) {
+    async submitNewEvent(event) {
         const url = this.url + ":" + this.port + "/" + this.status.deviceName + "/events";
         console.log("Submitting new event to", url);
 
@@ -232,32 +243,38 @@ class DataService {
             endTime: event.endTime
         });
 
-        return fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        }).then((res) => res.json());
+        const res = await this.safeFetch(
+            url,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            },
+            "submitting a new event"
+        );
+        if (!res) return null;
+        return await res.json();
     }
 
     /**
      * @param {string} deviceId
      */
-    sendHelpRequest(deviceId) {
+    async sendHelpRequest(deviceId) {
         const url = this.url + ":" + this.port + "/help";
         console.log("Sending help request");
 
         const body = new HelpRequest({ roomId: deviceId });
 
-        return fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        }).then((res) => {
-            if (!res.ok) {
-                throw new Error(`Server responded with status ${res.status}`);
-            }
-            return res.json();
-        });
+        const res = await this.safeFetch(
+            url,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            },
+            "sending help request"
+        );
+        if (!res) return null;
+        return await res.json();
     }
-
 }
