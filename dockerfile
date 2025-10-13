@@ -1,8 +1,8 @@
 FROM gcr.io/distroless/static
-MAINTAINER Daniel Randall <danny_randall@byu.edu>
 
-COPY scheduler /scheduler
-COPY web-dist/ /web-dist
+ARG NAME
+ENV name=${NAME}
 
-ENTRYPOINT [ "/scheduler" ]
-CMD ["-p", "80"]
+COPY ${NAME} /app
+
+ENTRYPOINT [ "/app" ]

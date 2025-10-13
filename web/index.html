@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base href="/web/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,200,300,400,500,600,700,800,900">
+    <meta charset="UTF-8" />
+    <title>Scheduler</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./components/book/book.css">
+    <link rel="stylesheet" href="./components/schedule/schedule.css">
+    <link rel="stylesheet" href="./components/home/home.css">
+    <link rel="stylesheet" href="./components/schedule/schedule.css">
+    <script src="./script.js"></script>
+    <script src="./data.js"></script>
+
+    <!-- on-screen keyboard -->
+    <link rel="stylesheet" href="./components/keyboard/keyboard.css">
+    <script src="./components/keyboard/keyboard.js"></script>
+    <script src="./components/dropdown/dropdown.js"></script>
+</head>
+
+<body>
+    <div class="header">
+
+    </div>
+    <div class="main">
+
+        <div class="component-container">
+            <!-- Dynamically load components here -->
+        </div>
+
+        <div class="date-time">
+            <p class="time-text">11:42</p>
+            <p class="date-text">Thursday, May 22</p>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <!-- <button>
+            <img src="assets/help.svg" alt="Back" width="40" height="40" />
+            Help
+        </button>
+        <button>
+            <img src="assets/plus.svg" alt="Back" width="32" height="32" />
+            Book Now
+        </button>
+        <button>
+            <img src="assets/schedule.svg" alt="Back" width="40" height="40" />
+            View Schedule
+        </button> -->
+
+    </div>
+
+    <!-- Help and error modals  -->
+    <div class="help-container hidden">
+        <div class="help-modal">
+            <div class="get-help">
+                <h2>Help</h2>
+                <p>
+                    Please call AV Support at 801-422-7671 for help, or request help by pressing <i>Request Help</i> to
+                    send
+                    support
+                    staff to
+                    you
+                </p>
+
+                <div class="help-buttons">
+                    <button class="cancel-help-button" onclick="closeHelp()">
+                        Cancel
+                    </button>
+                    <button class="request-help-button" onclick="requestHelp()">
+                        Request Help
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="help-confirmation hidden">
+                <div class="help-message"></div>
+                <button class="close-confirmation-button" onclick="closeHelp()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="error-container" onclick="showError()">
+        <img src="assets/error.svg" alt="Error" width="50" height="50"  />
+    </div>
+    
+    <div class="error-modal hidden">
+        <div class="error-content">
+            <h2>Error</h2>
+            <p class="error-message">An error has occurred.</p>
+            <button class="close-error-button" onclick="closeError()">
+                Close
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>

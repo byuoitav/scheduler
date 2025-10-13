@@ -1,0 +1,135 @@
+.back-button {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-title {
+    margin-left: 15px;
+}
+
+.create-event-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background-color: #0c0c0c79;
+    padding: 20px;
+    border-radius: 5px;
+    height: 250px;
+}
+
+.create-event-container h1 {
+    margin: 0px;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.event-title-input {
+    width: 95%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #282928a6;
+    color: white;
+    font-size: 1.5em;
+    height: 175px;
+    margin-bottom: 15px;
+    resize: none;
+}
+
+.time-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 99%;
+}
+
+.event-start-time {
+    padding: 5px;
+    color: #a7a7a7;
+    font-size: 1.2em;
+    border-style: none;
+    border-radius: 5px;
+    width: 45%;
+    background-color: #282928a6;
+
+}
+
+.event-end-time {
+    padding: 5px;
+    color: #a7a7a7;
+    font-size: 1.2em;
+    border-style: none;
+    border-radius: 5px;
+    width: 45%;
+    background-color: #282928a6;
+}
+
+.simple-keyboard {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 48vh !important;
+    background-color: #001832 !important;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+}
+
+.event-submission-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    display: none;
+    /* Hidden initially */
+    justify-content: center;
+    align-items: center;
+}
+
+.event-submission-confirmation {
+    background: #424242;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 40%;
+    font-size: 1.2em;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #444;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.save-button:disabled,
+.save-button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
+
+
