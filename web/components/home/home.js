@@ -81,6 +81,8 @@ window.components.home = {
         const currentEvent = window.dataService.getCurrentEvent();
         const showMeetingName = window.dataService.status.displayTitle;
 
+        roomName.innerText = window.dataService.getRoomStatus().roomName;
+
         // if occupied
         if (!unoccupied) {
             roomStatus.innerText = "IN USE";
@@ -93,7 +95,6 @@ window.components.home = {
                 meetingName.innerText = "";
             }
         } else {
-            roomName.innerText = window.dataService.getRoomStatus().roomName;
             roomStatus.innerText = "AVAILABLE";
             meetingName.innerText = "";
             roomStatus.classList.add('unoccupied');
