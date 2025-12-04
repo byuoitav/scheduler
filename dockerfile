@@ -5,4 +5,4 @@ ENV name=${NAME}
 
 COPY ${NAME} /app
 
-ENTRYPOINT [ "/app" ]
+ENTRYPOINT [ "/app", "-p", "8888" ]
