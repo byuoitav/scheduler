@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/static
+FROM alpine:3.23
 
 ARG NAME
 ENV name=${NAME}
