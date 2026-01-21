@@ -392,7 +392,7 @@ window.components.book = {
         this.labelSpaceButton();
     },
 
-    // Generate time options in 30-minute intervals
+    // Changes: ChatGPT'd to allow for current TOD to be selected as a start time for scheduling events
     generateTimeOptions() {
         const pad = n => n.toString().padStart(2, '0');
         const to12Hour = (h, m) => {
@@ -400,18 +400,36 @@ window.components.book = {
             const suffix = h >= 12 ? 'PM' : 'AM';
             return `${hour12}:${pad(m)} ${suffix}`;
         };
+
         const now = new Date();
         let hour = now.getHours();
         let minute = now.getMinutes();
-        if (minute >= 30) { hour += 1; minute = 0; } else { minute = 30; }
+
         const options = [];
+
+        // ✅ exact "now" (start-only)
+        options.push(to12Hour(hour, minute));
+
+        // snap forward to next half-hour
+        if (minute >= 30) {
+            hour += 1;
+            minute = 0;
+        } else {
+            minute = 30;
+        }
+
         while (hour < 24) {
             options.push(to12Hour(hour, minute));
             minute += 30;
-            if (minute >= 60) { minute = 0; hour += 1; }
+            if (minute >= 60) {
+                minute = 0;
+                hour += 1;
+            }
         }
+
         return options;
     },
+
 
     // Render end options based on selected start time
     renderEndOptions(select, selectedStart, options, events) {
