@@ -62,12 +62,6 @@ function Build {
     Write-Output "Build"
 
     New-Item -Path dist -ItemType Directory
-    # $location = Get-Location
-    # Write-Output $location\deps
-
-    # if (Test-Path "cmd") {
-    #     Set-Location "cmd"
-    #     Write-Output "Entering \cmd"
 
     Write-Output "*****************************************"
     Write-Output "Building for linux-arm"
@@ -79,9 +73,6 @@ function Build {
     Write-Output "Build output is located in ./dist/."
     Set-Item -Path env:GOOS -Value "windows"
     Set-Item -Path env:GOARCH -Value "amd64"
-
-    # Invoke-Expression "cd .."
-    # }
 }
 
 function Cleanup {
